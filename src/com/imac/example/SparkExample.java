@@ -107,7 +107,7 @@ public class SparkExample {
         JavaRDD<String> reduceRDD = sparkContext.parallelize(items, 1);
 
         // TODO : Example for reduce() api
-        JavaPairRDD<String, Integer> reduceByKeyRDD = flatMapPairRDD
+        JavaPairRDD<String, Integer> reduceByKeyRDD = mapPairRDD
                 .reduceByKey(new Function2<Integer, Integer, Integer>() {
                     public Integer call(Integer arg0, Integer arg1)
                             throws Exception {
