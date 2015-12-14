@@ -45,7 +45,7 @@ public class SparkExample {
             }
         });
 
-        JavaRDD<String> filterRDD = fileRDD.filter(new Function<String, Boolean>() {
+        JavaRDD<String> filterRDD = flatMapRDD.filter(new Function<String, Boolean>() {
             public Boolean call(String arg0) throws Exception {
                 if(arg0.contains("123") || arg0.contains("456")){
                     return true;
