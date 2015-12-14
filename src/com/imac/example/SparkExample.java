@@ -27,22 +27,32 @@ public class SparkExample {
         SparkConf conf = new SparkConf().setAppName("SparkExample").setMaster("yarn-cluster");
 
         JavaSparkContext sparkContext = new JavaSparkContext(conf);
-        JavaRDD<String> file = sparkContext.textFile(inputPath, 1);
+        JavaRDD<String> fileRDD = sparkContext.textFile(inputPath, 1);
 
-        JavaRDD<String> map = file.map(new Function<String, String>() {
+        JavaRDD<String> mapRDD = fileRDD.map(new Function<String, String>() {
             public String call(String arg0) throws Exception {
                 return arg0.split(",")[0];
             }
         });
 
-        JavaRDD<String> flatMapFile = file.flatMap(new FlatMapFunction<String, String>() {
+        JavaRDD<String> flatMapRDD = fileRDD.flatMap(new FlatMapFunction<String, String>() {
             public Iterable<String> call(String arg0)
                     throws Exception {
                 return Arrays.asList(arg0.split(","));
             }
         });
 
-        map.saveAsTextFile(outputPath);
-        flatMapFile.saveAsTextFile(outputPath+"/flatmap");
+        JavaRDD<String> filterRR = fileRDD.filter(new Function<String, Boolean>() {
+            public Boolean call(String arg0) throws Exception {
+                if(arg0.contains("123") || arg0.contains("456")){
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        mapRDD.saveAsTextFile(outputPath + "/map");
+        flatMapRDD.saveAsTextFile(outputPath + "/flatmap");
+        filterRR.saveAsTextFile(outputPath + "/filter");
     }
 }
