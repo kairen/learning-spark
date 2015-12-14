@@ -104,7 +104,16 @@ public class SparkExample {
         });
 
         List<String> items = Arrays.asList(reduceString.split("\n"));
-        JavaRDD<String> reduceRDD = sparkContext.parallelize(items);
+        JavaRDD<String> reduceRDD = sparkContext.parallelize(items, 1);
+
+        // TODO : Example for reduce() api
+        JavaPairRDD<String, Integer> reduceByKeyRDD = flatMapPairRDD
+                .reduceByKey(new Function2<Integer, Integer, Integer>() {
+                    public Integer call(Integer arg0, Integer arg1)
+                            throws Exception {
+                        return arg0+arg1;
+                    }
+                });
 
         mapRDD.saveAsTextFile(outputPath + "/map");
         flatMapRDD.saveAsTextFile(outputPath + "/flatMap");
@@ -113,6 +122,7 @@ public class SparkExample {
         flatMapPairRDD.saveAsTextFile(outputPath + "/flatMapPair");
         groupByRDD.saveAsTextFile(outputPath + "/groupBy");
         reduceRDD.saveAsTextFile(outputPath + "/reduce");
+        reduceByKeyRDD.saveAsTextFile(outputPath + "/reduceByKey");
 
     }
 
