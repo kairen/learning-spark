@@ -17,7 +17,7 @@ public class SparkExample {
 
         if (argv.length != 2) {
             System.err.printf("Usage: %s [generic options] <input> <output>\n",
-                    Example.class.getSimpleName());
+                    SparkExample.class.getSimpleName());
             return ;
         }
 
