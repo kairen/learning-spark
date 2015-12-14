@@ -4,14 +4,12 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.api.java.function.FlatMapFunction;
-import org.apache.spark.api.java.function.Function;
-import org.apache.spark.api.java.function.PairFlatMapFunction;
-import org.apache.spark.api.java.function.PairFunction;
+import org.apache.spark.api.java.function.*;
 import scala.Tuple2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by kairenbai on 2015/12/11.
@@ -97,13 +95,25 @@ public class SparkExample {
                     }
                 });
 
+        // TODO : Example for reduce() api
+        String reduceString = mapRDD.reduce(new Function2<String, String, String>() {
+            @Override
+            public String call(String s, String s2) throws Exception {
+                return s+s2;
+            }
+        });
+
+        List<String> items = Arrays.asList(reduceString.split("\n"));
+        JavaRDD<String> reduceRDD = sparkContext.parallelize(items);
+
         mapRDD.saveAsTextFile(outputPath + "/map");
         flatMapRDD.saveAsTextFile(outputPath + "/flatMap");
         filterRDD.saveAsTextFile(outputPath + "/filter");
         mapPairRDD.saveAsTextFile(outputPath + "/mapPair");
         flatMapPairRDD.saveAsTextFile(outputPath + "/flatMapPair");
-        groupByRDD.saveAsTextFile(outputPath + "/groupBy"
-        );
+        groupByRDD.saveAsTextFile(outputPath + "/groupBy");
+        reduceRDD.saveAsTextFile(outputPath + "/reduce");
+
     }
 
     public static boolean isInteger(String input) {
