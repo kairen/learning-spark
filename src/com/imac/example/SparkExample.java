@@ -1,10 +1,13 @@
 package com.imac.example;
 
 import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function;
+import org.apache.spark.api.java.function.PairFunction;
+import scala.Tuple2;
 
 import java.util.Arrays;
 
@@ -42,7 +45,7 @@ public class SparkExample {
             }
         });
 
-        JavaRDD<String> filterRR = fileRDD.filter(new Function<String, Boolean>() {
+        JavaRDD<String> filterRDD = fileRDD.filter(new Function<String, Boolean>() {
             public Boolean call(String arg0) throws Exception {
                 if(arg0.contains("123") || arg0.contains("456")){
                     return true;
@@ -51,8 +54,17 @@ public class SparkExample {
             }
         });
 
+        JavaPairRDD<String, Integer> pairRDD = flatMapRDD
+                .mapToPair(new PairFunction<String, String, Integer>() {
+                    public Tuple2<String, Integer> call(String arg0)
+                            throws Exception {
+                        return new Tuple2<String, Integer>(arg0, 1);
+                    }
+                });
+
         mapRDD.saveAsTextFile(outputPath + "/map");
-        flatMapRDD.saveAsTextFile(outputPath + "/flatmap");
-        filterRR.saveAsTextFile(outputPath + "/filter");
+        flatMapRDD.saveAsTextFile(outputPath + "/flatMap");
+        filterRDD.saveAsTextFile(outputPath + "/filter");
+        pairRDD.saveAsTextFile(outputPath + "/mapPair");
     }
 }
