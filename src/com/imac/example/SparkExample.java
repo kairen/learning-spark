@@ -34,12 +34,14 @@ public class SparkExample {
         JavaSparkContext sparkContext = new JavaSparkContext(conf);
         JavaRDD<String> fileRDD = sparkContext.textFile(inputPath, 1);
 
+        // TODO : Example for map() api
         JavaRDD<String> mapRDD = fileRDD.map(new Function<String, String>() {
             public String call(String arg0) throws Exception {
                 return arg0.split(",")[0];
             }
         });
 
+        // TODO : Example for flatMap() api
         JavaRDD<String> flatMapRDD = fileRDD.flatMap(new FlatMapFunction<String, String>() {
             public Iterable<String> call(String arg0)
                     throws Exception {
@@ -47,6 +49,7 @@ public class SparkExample {
             }
         });
 
+        // TODO : Example for filter() api
         JavaRDD<String> filterRDD = flatMapRDD.filter(new Function<String, Boolean>() {
             public Boolean call(String arg0) throws Exception {
                 if(arg0.contains("123") || arg0.contains("456")){
@@ -56,6 +59,7 @@ public class SparkExample {
             }
         });
 
+        // TODO : Example for mapToPair() api
         JavaPairRDD<String, Integer> mapPairRDD = flatMapRDD
                 .mapToPair(new PairFunction<String, String, Integer>() {
                     public Tuple2<String, Integer> call(String arg0)
@@ -64,6 +68,7 @@ public class SparkExample {
                     }
                 });
 
+        // TODO : Example for flatMapToPair() api
         JavaPairRDD<String, Integer> flatMapPairRDD = fileRDD
                 .flatMapToPair(new PairFlatMapFunction<String, String, Integer>() {
                     public Iterable<Tuple2<String, Integer>> call(String arg0)
@@ -81,19 +86,31 @@ public class SparkExample {
                     }
                 });
 
+        // TODO : Example for groupBy() api
+        JavaPairRDD<String, Iterable<String>> groupByRDD = flatMapRDD
+                .groupBy(new Function<String, String>() {
+                    public String call(String arg0) throws Exception {
+                        if (isInteger(arg0)) {
+                            return (Integer.parseInt(arg0) > 500 ? "大於 500":"小於 500");
+                        }
+                        return "None";
+                    }
+                });
+
         mapRDD.saveAsTextFile(outputPath + "/map");
         flatMapRDD.saveAsTextFile(outputPath + "/flatMap");
         filterRDD.saveAsTextFile(outputPath + "/filter");
         mapPairRDD.saveAsTextFile(outputPath + "/mapPair");
         flatMapPairRDD.saveAsTextFile(outputPath + "/flatMapPair");
+        groupByRDD.saveAsTextFile(outputPath + "/groupBy"
+        );
     }
 
     public static boolean isInteger(String input) {
         try {
             Integer.parseInt(input);
             return true;
-        }
-        catch(Exception e) {
+        } catch(Exception e) {
             return false;
         }
     }
