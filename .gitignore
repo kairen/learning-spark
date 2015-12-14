@@ -1,0 +1,8 @@
+lib/
+lib/*
+out/
+out/*
+.idea/
+.idea/*
+.DS_Store
+*.iml
