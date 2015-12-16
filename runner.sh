@@ -22,7 +22,7 @@ export SPARK_JAR_PATH='out/artifacts/SparkExample_jar/SparkExample.jar'
 export SPARK_INPUT='/spark/hw/test.txt'
 export SPARK_OUTPUT='/spark/hw/output'
 
-# hadoop fs -rm -r $SPARK_OUTPUT
+hadoop fs -rm -r $SPARK_OUTPUT
 
 spark-submit --class $SPARK_PACKAGE \
 --master $SPARK_MASTER \
