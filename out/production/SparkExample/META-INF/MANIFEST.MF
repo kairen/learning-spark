@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: com.imac.example.SparkExample
+Main-Class: com.imac.hot.Analysis
 

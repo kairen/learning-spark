@@ -106,7 +106,7 @@ public class SparkExample {
         List<String> items = Arrays.asList(reduceString.split("\n"));
         JavaRDD<String> reduceRDD = sparkContext.parallelize(items, 1);
 
-        // TODO : Example for reduce() api
+        // TODO : Example for reduceByKey() api
         JavaPairRDD<String, Integer> reduceByKeyRDD = mapPairRDD
                 .reduceByKey(new Function2<Integer, Integer, Integer>() {
                     public Integer call(Integer arg0, Integer arg1)
@@ -123,7 +123,6 @@ public class SparkExample {
         groupByRDD.saveAsTextFile(outputPath + "/groupBy");
         reduceRDD.saveAsTextFile(outputPath + "/reduce");
         reduceByKeyRDD.saveAsTextFile(outputPath + "/reduceByKey");
-
     }
 
     public static boolean isInteger(String input) {
