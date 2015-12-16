@@ -3,7 +3,8 @@ imac spark 教學範例與作業程式碼。分別包含以下：
 * Spark API Example
 * 找出當月消費前20名商品
 * Spark SQL Example
-* Spark Stream Example
+* Spark Streaming Example
+* Spark MLlib Example
 
 ### 單機部署方式
 部署一個單機的 Spark 有許多種方式，由於方便教學使用，我們採用在 OpenStack 上建立一個 Ubuntu 14.04(15.10)，並使用以下兩種方式：
