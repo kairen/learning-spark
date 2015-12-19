@@ -1,4 +1,4 @@
-package com.imac.hot;
+package com.homeworks;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
@@ -13,13 +13,13 @@ import java.util.List;
 /**
  * Created by kairenbai on 2015/12/14.
  */
-public class Analysis {
+public class TopProductionAnalysis {
 
     public static void main(final String []argv) {
 
         if (argv.length != 2) {
             System.err.printf("Usage: %s [generic options] <input> <output>\n",
-                    Analysis.class.getSimpleName());
+                    TopProductionAnalysis.class.getSimpleName());
             return;
         }
 

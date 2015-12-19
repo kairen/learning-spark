@@ -1,4 +1,4 @@
-package com.imac.example;
+package com.spark;
 
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.function.PairFunction;

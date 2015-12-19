@@ -1,4 +1,4 @@
-package com.imac.example;
+package com.spark;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
@@ -14,13 +14,13 @@ import java.util.List;
 /**
  * Created by kairenbai on 2015/12/11.
  */
-public class SparkExample {
+public class SparkBasic {
 
     public static void main(final String []argv) {
 
         if (argv.length != 2) {
             System.err.printf("Usage: %s [generic options] <input> <output>\n",
-                    SparkExample.class.getSimpleName());
+                    SparkBasic.class.getSimpleName());
             return ;
         }
 

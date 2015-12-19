@@ -1,77 +1,46 @@
-# Spark example and homework
-imac spark 教學範例與作業程式碼。分別包含以下：
-* Spark API Example
-* 找出當月消費前20名商品
-* Spark SQL Example
-* Spark Streaming Example
-* Spark MLlib Example
+# Spark tutorial for imac
+本項目將儲存所有於分享會以及課程上，所接觸的系統建置、Spark API撰寫、HDFS 操作...等教學與整理，主要授課人員為 NUTC imac 內部團隊自我訓練。
 
-### 單機部署方式
-部署一個單機的 Spark 有許多種方式，由於方便教學使用，我們採用在 OpenStack 上建立一個 Ubuntu 14.04(15.10)，並使用以下兩種方式：
-* 直接部署於 Ubuntu 環境上：
-```sh
-$ wget http://files.imaclouds.com/scripts/hadoop-spark-installer.sh
-$ chmod u+x hadoop-spark-installer.sh
-$ ./hadoop-spark-installer.sh
-```
-> 依照 文字介面的 GUI 輸入即可，輸入完後不需要手動按任何鍵，等完成後透過 source 環境參數：
-```sh
-$ source .bashrc
-$ hadoop version
-Hadoop 2.6.0
-Subversion https://git-wip-us.apache.org/repos/asf/hadoop.git -r e3496499ecb8d220fba99dc5ed4c99c8f9e33bb1
-Compiled by jenkins on 2014-11-13T21:10Z
-Compiled with protoc 2.5.0
-...
-```
+### 主要包含項目
+1. Spark 概念整理
+2. Spark 環境部署模式
+3. Spark API 簡單操作
+4. Spark SQL API(Hive on Spark)
+5. Spark Streaming API(DStream)
+6. Message Queue Broker(such as MQTT, Kafka...etc)
+7. Spark MLlib
+8. ELK logs 分析
+9. Spark 串接 s3 與 swift
+10. Spark NoSQL 串接
+11. Spark Dataframe
 
-* 透過 Docker 提供 Spark On YARN：
-```sh
-$ curl http://files.imaclouds.com/scripts/docker_install.sh | sh
-$ docker pull kairen/yarn-spark:1.5
-$ docker run -d -p 8088:8088 -p 50070:50070 -h spark-master  \
--v <your_dir>:/root/spark-run/ \
---name yarn-spark kairen/yarn-spark:1.5 -d
-```
-> 詳細參考 [Docker Hub](https://hub.docker.com/r/kairen/yarn-spark/) 的 README.md
+> 以上內容我們會逐一整理，並寫成文件來分享給大家。
 
-### API Example Dataset
-Spark API Example 採用以下測試資料來完成操作，可以透過 vim 或 nano 新增：
-```txt
-$ vim test.txt
-# test data
-a,123,456,789,11344,2142,123
-b,1234,124,1234,123,123
-c,123,4123,5435,1231,5345
-d,123,456,789,113,2142,143
-e,123,446,789,14,2142,113
-f,123,446,789,14,2142,1113,323
-```
-新增完成後，上傳至 HDFS 或者 OpenStack Swift 上，以下為 HDFS 範例：
-```sh
-$ hadoop fs -mkdir -p /spark/hw
-$ hadoop fs -put test.txt /spark/hw
-```
+### 參與貢獻
+任何團隊成員都可以對該 git 做貢獻，未來也會請大家針對不一樣的作業進行提交，一個基本的貢獻流程如下所示：
+1. 在 ```Github``` 上 ```fork``` 到自己的 Repository，例如：```<User>/Spark-tutorial.git```，然後 ```clone```到 local 端，並設定 Git 使用者資訊。
 
-### 消費前20名 Dataset
-找出當月消費前20名商品的範例，請下載[商品交易 Log](http://files.imaclouds.com/dataset/HMC-Contest.log)並透過 ```grep``` 前處理來，完成後上傳至 HDFS：
-```sh
-$ wget http://files.imaclouds.com/dataset/HMC-Contest.log
-$ grep -o "act=order;uid=\w*\>;plist=[0-9,]*\>" HMC-Contest.log > preprocessed.csv
-$ hadoop fs -put preprocessed.csv /spark/hw
+ ```sh
+git clone https://github.com/imac-cloud/Spark-tutorial.git
+cd spark-tutorial
+git config user.name "User"
+git config user.email user@email.com
 ```
-> 資料前處理可以考慮是否要進行，若在 Hadoop MR 中，可以減少迭代次數，但由於 Spark 善於這樣的工作，但會影響程式撰寫方式。
+2. 修改程式碼或頁面後，透過 ```commit``` 來提交到自己的 Repository：
 
-### 執行方式
-由於本次教學是部署於 YARN 之上的 Spark，若要提交一個分析 Application，可以使用以下指令：
-```sh
-$ spark-submit --class com.imac.hot.Analysis \
---master yarn-cluster HotAnalysis.jar \
-/spark/hw/mine_data.csv \
-/spark/hw/hot_output
+ ```sh
+git commit -am "Fix issue #1: change helo to hello"
+git push
 ```
-> 第一行```--class``` 後面接 Main 函式的 ```package name``` 與 ```class name```。
+> 若新增採用一般文字訊息，如```Add Spark MLlib example ...```。
 
-> 第二行 ```--master``` 為使用叢集模式，這邊採用```yarn-cluster```。
+3. 在 GitHub 上提交一個 Pull Request。
+4. 持續的針對 Project Repository 進行更新內容：
 
-> 第三行與第四行為```輸入資料```與```輸出目錄```。
+ ```sh
+ git remote add upstream  https://github.com/imac-cloud/Spark-tutorial.git
+ git fetch upstream
+ git checkout master
+ git rebase upstream/master
+ git push -f origin master
+ ```
