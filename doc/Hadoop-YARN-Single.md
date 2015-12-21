@@ -133,7 +133,7 @@ $ jps
 4025 NameNode
 4383 SecondaryNameNode
 ```
-> 開啟[Website YARN Dashboard](localhost:8088)與[HDFS Dashboard](localhost:50070)
+> 開啟 [Website YARN Dashboard](http://localhost:8088) 與 [HDFS Dashboard](http://localhost:50070) 
 
 #### 設定環境變數
 ```sh
