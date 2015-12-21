@@ -63,7 +63,7 @@ $ sudo vim mapred-site.xml
 ```sh
 $ sudo mkdir -p /usr/local/hadoop_store/hdfs/namenode
 $ sudo mkdir -p /usr/local/hadoop_store/hdfs/datanode
-$ sudo chown -R $USER_NAME:$USER_NAME /usr/local/hadoop_store
+$ sudo chown -R $USER:$USER /usr/local/hadoop_store
 $ sudo vim hdfs-site.xml
 
 # 修改以下放置到<configuration></configuration>裡面
@@ -183,7 +183,7 @@ $ hadoop jar hadoop-mapreduce-examples-2.6.0.jar wordcount /example/words.txt /e
 ```sh
 $ curl -s http://files.imaclouds.com/packages/hadoop-spark/spark-1.5.2-bin-hadoop2.6.tgz | sudo tar -xz -C /opt/
 $ sudo mv /opt/spark-1.5.2-bin-hadoop2.6 /opt/spark
-$ sudo chown $USER_NAME:$USER_NAME -R /opt/spark
+$ sudo chown $USER:$USER -R /opt/spark
 ```
 > 其他 Hadoop 版本可以到這邊[Spark-Hadoop](http://d3kbcqa49mib13.cloudfront.net)查看。
 
