@@ -89,6 +89,11 @@ scp -r /opt/spark ubuntu@hadoop-slave2:/opt
 ```
 > 這樣 Spark 就啟動完成了，開啟 [Web UI](http://<ip>:8090) 來檢查狀態。
 
+設定使用者環境參數：
+```sh
+$ echo "export SPARK_HOME=/opt/spark" | sudo tee -a ~/.bashrc
+$ echo "export PATH=\$SPARK_HOME/bin:\$PATH" | sudo tee -a ~/.bashrc
+```
 
 ## 驗證系統
 為了驗證 Spark 是否成功安裝，可以透過執行一個範例程式來看看結果，如下所示：

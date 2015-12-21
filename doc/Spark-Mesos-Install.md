@@ -19,7 +19,7 @@ $ ssh-keygen -t rsa
 $ ssh-copy-id localhost
 ```
 
-安裝Java 1.7 JDK：
+安裝Java 1.8 JDK：
 ```sh
 $ sudo apt-get purge openjdk*
 $ sudo apt-get -y autoremove
@@ -54,13 +54,15 @@ $ ssh-copy-id ubuntu@mesos-slave-2
 $ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv E56151BF
 $ DISTRO=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
 $ CODENAME=$(lsb_release -cs)
-
 $ echo "deb http://repos.mesosphere.com/${DISTRO} ${CODENAME} main" | sudo tee /etc/apt/sources.list.d/mesosphere.list
 ```
 加入 key 與 repository 後，即可透過```apt-get```安裝：
 ```sh
-$ sudo apt-get -y install mesos marathon
+$ sudo apt-get update
+$ sudo apt-get -y install mesos 
 ```
+> ```P.S```：需要再安裝 marathon
+
 > Mesos 套件將自動的抓取 ZooKeeper 套件
 
 ### Master 節點配置
@@ -171,3 +173,50 @@ MASTER=$(mesos-resolve `cat /etc/mesos/zk`)
 mesos-execute --master=$MASTER --name="cluster-test" --command="sleep 5"
 ```
 > 若要查看細節資訊，可以用瀏覽器開啟 [Mesos Console](http://<master-ip>:5050)、[Marathon console](http://<master-ip>:8080) 
+
+## 安裝 Spark Driver
+首先下載 Spark，並修改權限：
+```sh
+$ curl -s http://files.imaclouds.com/packages/hadoop-spark/spark-1.5.2-bin-hadoop2.6.tgz | sudo tar -xz -C /opt/
+$ sudo mv /opt/spark-1.5.2-bin-hadoop2.6 /opt/spark
+$ sudo chown $USER:$USER -R /opt/spark
+```
+
+之後到```spark/conf```目錄，將```spark-env.sh.template```複製為```spark-env.sh```：
+```sh
+$ cp spark-env.sh.template spark-env.sh
+```
+
+在```spark-env.sh```這內容最下方增加這幾筆環境參數：
+```sh
+export MESOS_NATIVE_JAVA_LIBRARY="/usr/lib/libmesos.so"
+export MASTER="mesos://10.26.1.161:5050"
+export SPARK_EXECUTOR_URI="ftp://ftp.twaren.net/Unix/Web/apache/spark/spark-1.5.2/spark-1.5.2.tgz"
+
+export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")
+
+export SPARK_LOCAL_IP=$(ifconfig eth0 | awk '/inet addr/{print substr($2,6)}') 
+export SPARK_LOCAL_HOSTNAME=$(ifconfig eth0 | awk '/inet addr/{print substr($2,6)}') 
+```
+> 若是多個 Master 採用以下方式```mesos://zk://192.168.100.7:2181,192.168.100.8:2181,192.168.100.9:2181/mesos```。
+
+設定使用者環境參數：
+```sh
+$ echo "export SPARK_HOME=/opt/spark" | sudo tee -a ~/.bashrc
+$ echo "export PATH=\$SPARK_HOME/bin:\$PATH" | sudo tee -a ~/.bashrc
+```
+
+執行```spark-shell```，來驗證 Spark 可否正常執行：
+```sh
+spark-shell --master mesos://192.168.1.34:5050
+```
+或使用範例程式提交 Job：
+```sh
+spark-submit --class org.apache.spark.examples.SparkPi \
+--master mesos://192.168.1.34:5050 \
+--num-executors 1 \
+--executor-memory 1g \
+--executor-cores 1 \
+lib/spark-examples*.jar \
+1
+```
