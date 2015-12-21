@@ -61,7 +61,7 @@ $ echo "deb http://repos.mesosphere.com/${DISTRO} ${CODENAME} main" | sudo tee /
 $ sudo apt-get update
 $ sudo apt-get -y install mesos 
 ```
-> ```P.S```：需要再安裝 marathon
+> ```P.S```： Master 需要再安裝 marathon
 
 > Mesos 套件將自動的抓取 ZooKeeper 套件
 
@@ -208,11 +208,14 @@ $ echo "export PATH=\$SPARK_HOME/bin:\$PATH" | sudo tee -a ~/.bashrc
 
 執行```spark-shell```，來驗證 Spark 可否正常執行：
 ```sh
-spark-shell --master mesos://192.168.1.34:5050
+$ spark-shell --master mesos://192.168.1.34:5050
+val data = 1 to 10000
+val distData = sc.parallelize(data)
+distData.filter(_< 10).collect()
 ```
 或使用範例程式提交 Job：
 ```sh
-spark-submit --class org.apache.spark.examples.SparkPi \
+$ spark-submit --class org.apache.spark.examples.SparkPi \
 --master mesos://192.168.1.34:5050 \
 --num-executors 1 \
 --executor-memory 1g \
