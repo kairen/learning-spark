@@ -41,8 +41,8 @@ $ sudo apt-get -y install oracle-java7-installer
 
 並在```Master```節點複製所有```Slave```的 ssh key：
 ```sh
-ssh-copy-id ubuntu@hadoop-slave1
-ssh-copy-id ubuntu@hadoop-slave2
+$ ssh-copy-id ubuntu@hadoop-slave1
+$ ssh-copy-id ubuntu@hadoop-slave2
 ```
 ## 安裝 Spark
 首先下載 Spark，並修改權限：
