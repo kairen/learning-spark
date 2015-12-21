@@ -126,8 +126,13 @@ $ ./start-dfs.sh
 #### 檢查是否開啟以下服務
 ```sh
 $ jps
+3457 ResourceManager
+7087 Jps
+3593 NodeManager
+4190 DataNode
+4025 NameNode
+4383 SecondaryNameNode
 ```
-![jps](images/jps.png)
 > 開啟[Website YARN Dashboard](localhost:8088)與[HDFS Dashboard](localhost:50070)
 
 #### 設定環境變數
