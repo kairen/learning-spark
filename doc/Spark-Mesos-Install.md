@@ -28,10 +28,7 @@ $ sudo apt-get update
 $ echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 $ echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 $ sudo apt-get -y install oracle-java8-installer
-$ sudo apt-get install oracle-java8-set-default
 ```
-
-
 
 新增各節點 Hostname 至 ```/etc/hosts``` 檔案：
 ```sh
@@ -191,7 +188,7 @@ $ cp spark-env.sh.template spark-env.sh
 ```sh
 export MESOS_NATIVE_JAVA_LIBRARY="/usr/lib/libmesos.so"
 export MASTER="mesos://10.26.1.161:5050"
-export SPARK_EXECUTOR_URI="ftp://ftp.twaren.net/Unix/Web/apache/spark/spark-1.5.2/spark-1.5.2.tgz"
+export SPARK_EXECUTOR_URI="/opt/spark-1.5.2.tgz"
 
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")
 
@@ -199,6 +196,18 @@ export SPARK_LOCAL_IP=$(ifconfig eth0 | awk '/inet addr/{print substr($2,6)}')
 export SPARK_LOCAL_HOSTNAME=$(ifconfig eth0 | awk '/inet addr/{print substr($2,6)}') 
 ```
 > 若是多個 Master 採用以下方式```mesos://zk://192.168.100.7:2181,192.168.100.8:2181,192.168.100.9:2181/mesos```。
+
+接著壓縮 ```/opt/spark```資料夾：
+```sh
+cd /opt
+sudo tar -czvf spark-1.5.2.tgz spark/
+```
+
+並在```Master```節點複製到所有```Slave```：
+```sh
+$ scp spark-1.5.2.tgz mesos-slave-1
+$ scp spark-1.5.2.tgz mesos-slave-2
+```
 
 設定使用者環境參數：
 ```sh
