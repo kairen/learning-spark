@@ -29,6 +29,17 @@ function wrap {
     fi
 }
 
+function index {
+	array=$2
+	arraylength=${#array[@]}
+  	for (( i=2; i<${arraylength}+1; i++ ));
+	do
+   		if [ "$1" == "${array[$i-1]}" ]; then
+   			echo "$i"
+   			break
+   		fi
+	done
+}
 
 MASTER_INFO="
 mesos-deploy master-install {host1, host2, hosts}   # installing a master node
