@@ -21,7 +21,7 @@ function master-install {
    		msg "Installing apache mesos ....."
    		run=$(install_mesos "master" ${array[$i-1]})
 
-   		msg "Configure to mesos env ....."
+   		msg "Configure to mesos-master env ....."
    		run=$(master-config ${array[$i-1]})
 
    		msg "Finish install ....."
@@ -43,20 +43,29 @@ function slave-install {
 		exit 1
 	fi
 
-	# Get all slave node
-	for (( i=2; i<${MASTER_INDEX}; i++ ));
-	do
-   		msg "Install ${array[$i-1]} ..."
-	done
-
 	# Get all master node
 	for (( i=MASTER_INDEX+1; i<${arraylength}+1; i++ ));
 	do
-   		msg "Configure to ${array[$i-1]} ..."
+   		msg "Get ${array[$i-1]} ..."
+	done
+
+	# Get all slave node
+	for (( i=2; i<${MASTER_INDEX}; i++ ));
+	do
+		echo "[ ---------------- ${array[$i-1]} ---------------- ]"
+   		msg "Installing oracle java8 ....."
+   		run=$(install_jdk ${array[$i-1]})
+
+   		msg "Installing apache mesos ....."
+   		run=$(install_mesos "slave" ${array[$i-1]})
+
+   		msg "Configure to mesos-slave env ....."
+   		run=$(slave-config ${array[$i-1]})
+
 	done
 }
 
-
+# Install main()
 if [ "$1" == "master-install" ]; then
 	if [ -z "$2" ]; then
 		msg "${MASTER_INFO}" "master-install Usage"
