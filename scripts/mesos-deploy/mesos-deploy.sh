@@ -13,8 +13,9 @@ function master-install {
 	arraylength=${#array[@]}
 	for (( i=2; i<${arraylength}+1; i++ ));
 	do
-   		echo "Processing ${array[$i-1]} ..."
-
+   		echo "[ ---------------- Processing ${array[$i-1]} ---------------- ]"
+   		install_jdk ${array[$i-1]}
+   		install_mesos "master" ${array[$i-1]}
 	done
 }
 
