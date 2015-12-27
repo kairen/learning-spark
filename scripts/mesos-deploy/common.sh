@@ -28,3 +28,13 @@ function wrap {
         exit 1
     fi
 }
+
+
+MASTER_INFO="
+mesos-deploy master-install {host1, host2, hosts}   # installing a master node
+"
+
+SLAVE_INFO="
+mesos-deploy slave-install {host1, host2, hosts}    # installing some slaves node
+  Option: --masters {master1, master2, masters}     # add some masters to slaves 
+"

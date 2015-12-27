@@ -5,12 +5,35 @@
 # 2015/12/21 Kyle.b Release
 # 
 
-function install_jdk {
-	ssh $1 sudo apt-get purge openjdk*
-	ssh $1 sudo apt-get -y autoremove
-	ssh $1 sudo add-apt-repository -y ppa:webupd8team/java
-	ssh $1 sudo apt-get update
-	ssh $1 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
-	ssh $1 echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-	ssh $1 sudo apt-get -y install oracle-java8-installer
+source common.sh
+source install-packages.sh
+
+
+function master-install {
+	msg "Install master node ..." 
+	array=("$@")
+	arraylength=${#array[@]}
+	for (( i=2; i<${arraylength}+1; i++ ));
+	do
+   		echo "${array[$i-1]}"
+	done
 }
+
+function slave-install {
+	msg "Install slaves node ..." 
+}
+
+if [ "$1" == "master-install" ]; then
+	if [ -z "$2" ]; then
+		msg "${MASTER_INFO}" "master-install Usage"
+	else
+		master-install $@
+	fi
+elif [[ "$1" == "slave-install" ]]; then
+	msg "${SLAVE_INFO}" "slave-install Usage"
+
+else
+	msg "${MASTER_INFO} ${SLAVE_INFO}" "Usage"
+fi
+
+
