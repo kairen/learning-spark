@@ -6,9 +6,10 @@
 # 
 source common.sh
 source install-packages.sh
-
+source config.sh
 
 function master-install {
+	
 	array=("$@")
 	arraylength=${#array[@]}
 	for (( i=2; i<${arraylength}+1; i++ ));
@@ -19,7 +20,11 @@ function master-install {
 
    		msg "Installing apache mesos ....."
    		run=$(install_mesos "master" ${array[$i-1]})
-   		
+
+   		msg "Configure to mesos env ....."
+   		run=$(master-config ${array[$i-1]})
+
+   		msg "Finish install ....."
 	done
 }
 
@@ -50,6 +55,7 @@ function slave-install {
    		msg "Configure to ${array[$i-1]} ..."
 	done
 }
+
 
 if [ "$1" == "master-install" ]; then
 	if [ -z "$2" ]; then
