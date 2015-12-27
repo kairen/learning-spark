@@ -5,7 +5,6 @@
 source common.sh
 
 function install_jdk {
-	msg "Installing oracle java8 ....."
 	ssh $1 sudo apt-get purge openjdk*
 	ssh $1 sudo apt-get -y autoremove
 	ssh $1 sudo add-apt-repository -y ppa:webupd8team/java
@@ -16,10 +15,10 @@ function install_jdk {
 
 
 function install_mesos {
-	msg "Installing apache mesos ....."
 	ssh $2 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv E56151BF
 	ssh $2 DISTRO=$(lsb_release -is | tr '[:upper:]' '[:lower:]'); CODENAME=$(lsb_release -cs); echo "deb http://repos.mesosphere.com/${DISTRO} ${CODENAME} main" | sudo tee /etc/apt/sources.list.d/mesosphere.list
 	ssh $2 sudo apt-get update
+	
 	if [ "$1" == "master" ]; then
 		ssh $2 sudo apt-get -y install mesos marathon
 	else
