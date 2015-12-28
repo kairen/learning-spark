@@ -4,10 +4,8 @@
 # History:
 # 2015/12/21 Kyle.b Release
 
-# Configure zookeeper
-# 
-
 function master-config {
+	# Configure zookeeper
 	ssh $1 echo 1 | sudo tee /etc/zookeeper/conf/myid
 	ssh $1 echo server.1=$(ip route get 8.8.8.8 | awk '{print $NF; exit}'):2888:3888 | sudo tee -a /etc/zookeeper/conf/zoo.cfg
 	ssh $1 sudo service zookeeper restart &>/dev/null
@@ -34,6 +32,16 @@ function master-config {
 }
 
 function slave-config {
+	# Configure zookeeper
+	# ssh $1 echo manual | sudo tee /etc/init/zookeeper.override
+	# ssh $1 sudo service zookeeper stop &>/dev/null
 	
+	# Configure mesos-slave
+	echo $(cat ./masters)
+	# ssh $1 echo zk://$(cat ~/masters)/mesos | sudo tee /etc/mesos/zk
+	# ssh $1 echo $(ip route get 8.8.8.8 | awk '{print $NF; exit}') | sudo tee /etc/mesos-slave/ip
+	# ssh $1 sudo service mesos-master stop &>/dev/null
+	# ssh $1 echo manual | sudo tee /etc/init/mesos-master.override
+	# ssh $1 sudo service mesos-slave restart &>/dev/null
 }
 
