@@ -25,7 +25,7 @@ function master-config {
 	ssh $1 echo zk://$(ip route get 8.8.8.8 | awk '{print $NF; exit}'):2181/marathon | sudo tee /etc/marathon/conf/zk
 	
 	ssh $1 sudo service mesos-slave stop &>/dev/null
-	ssh $1 echo manual | sudo tee /etc/init/mesos-slave.override
+	echo manual | ssh $1 sudo tee /etc/init/mesos-slave.override
 
 	ssh $1 sudo service mesos-master restart &>/dev/null
 	ssh $1 sudo service marathon restart &>/dev/null
@@ -33,16 +33,16 @@ function master-config {
 
 function slave-config {
 	# Configure zookeeper
-	ssh $1 echo manual | sudo tee /etc/init/zookeeper.override
-	ssh $1 sudo service zookeeper stop &>/dev/null
+	echo manual | ssh $2 sudo tee /etc/init/zookeeper.override
+	ssh $2 sudo service zookeeper stop &>/dev/null
 	
 	# Configure mesos-slave
-	ssh $1 echo zk://$(cat masters)/mesos | sudo tee /etc/mesos/zk
-	ssh $1 echo $(ip route get 8.8.8.8 | awk '{print $NF; exit}') | sudo tee /etc/mesos-slave/ip
-	ssh $1 sudo service mesos-master stop &>/dev/null
-	ssh $1 echo manual | sudo tee /etc/init/mesos-master.override
-	ssh $1 sudo service mesos-slave restart &>/dev/null
+	echo "zk://$1/mesos" | ssh $2 sudo tee /etc/mesos/zk
+	echo $2 | ssh $2 sudo tee /etc/mesos-slave/ip
+	ssh $2 sudo service mesos-master stop &>/dev/null
 
-	ssh $1 rm -rf masters
+	echo manual | ssh $2 sudo tee /etc/init/mesos-master.override
+	ssh $2 sudo service mesos-slave restart &>/dev/null
+
 }
 
