@@ -26,7 +26,7 @@ function signle-install {
 	VERSION=""
 	if [ $VERSION_INDEX -gt 0 ]; then
 		ARGS="${array[$VERSION_INDEX]}"
-		if [ "$ARGS" != "" ] && echo $ARGS | grep -q "\d\.\d\.\d" ; then
+		if [ "$ARGS" != "" ] && echo $ARGS | grep -q "[0-9].[0-9].[0-9]" ; then
 			VERSION=${array[$VERSION_INDEX]}
 		else
 			msg "Option: --version value error ..." "ERROR"
@@ -49,16 +49,15 @@ function signle-install {
 	for (( i=$begin+2; i<${arraylength}+1; i++ )); do
 		echo "[ ---------------- ${array[$i-1]} ---------------- ]"
 		msg "Installing oracle java8 ....."
-   		#install_jdk ${array[$i-1]} &>/dev/null
+   		install_jdk ${array[$i-1]} &>/dev/null
    		
    		msg "Installing other packages ....."
-   		#install_other ${array[$i-1]} &>/dev/null
+   		install_other ${array[$i-1]} &>/dev/null
    		
    		msg "Automatically generated ssh keys ....."
-   		#ssh-config ${array[$i-1]} &>/dev/null
+   		ssh-config ${array[$i-1]} &>/dev/null
 
    		msg "Installing Hadoop ....."
-   		#install_hadoop ${version} ${array[$i-1]} &>/dev/null
-
+   		install_hadoop ${version} ${array[$i-1]} &>/dev/null
 	done
 }
