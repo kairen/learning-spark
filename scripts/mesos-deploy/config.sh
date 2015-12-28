@@ -37,7 +37,7 @@ function slave-config {
 	ssh $1 sudo service zookeeper stop &>/dev/null
 	
 	# Configure mesos-slave
-	ssh $1 echo zk://$(cat ~/masters)/mesos | sudo tee /etc/mesos/zk
+	ssh $1 echo zk://$(cat masters)/mesos | sudo tee /etc/mesos/zk
 	ssh $1 echo $(ip route get 8.8.8.8 | awk '{print $NF; exit}') | sudo tee /etc/mesos-slave/ip
 	ssh $1 sudo service mesos-master stop &>/dev/null
 	ssh $1 echo manual | sudo tee /etc/init/mesos-master.override
