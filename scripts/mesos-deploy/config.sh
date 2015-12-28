@@ -20,7 +20,7 @@ function master-config {
 	# Configure marathon
 	ssh $1 sudo mkdir /etc/marathon/
 	ssh $1 sudo mkdir /etc/marathon/conf
-	ssh $1 echo $(ip route get 8.8.8.8 | awk '{print $NF; exit}') | sudo tee /etc/marathon/conf/hostname
+	echo $1 | ssh sudo tee /etc/marathon/conf/hostname
 	ssh $1 echo zk://$(ip route get 8.8.8.8 | awk '{print $NF; exit}'):2181/mesos | sudo tee /etc/marathon/conf/master
 	ssh $1 echo zk://$(ip route get 8.8.8.8 | awk '{print $NF; exit}'):2181/marathon | sudo tee /etc/marathon/conf/zk
 	
@@ -39,10 +39,10 @@ function slave-config {
 	# Configure mesos-slave
 	echo "zk://$1/mesos" | ssh $2 sudo tee /etc/mesos/zk
 	echo $2 | ssh $2 sudo tee /etc/mesos-slave/ip
+	echo $2 | ssh $2 sudo tee /etc/mesos-slave/hostname
 	ssh $2 sudo service mesos-master stop &>/dev/null
 
 	echo manual | ssh $2 sudo tee /etc/init/mesos-master.override
 	ssh $2 sudo service mesos-slave restart &>/dev/null
-
 }
 
