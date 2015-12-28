@@ -1,0 +1,37 @@
+#!/bin/bash
+# Program:
+#       This program is install hadoop.
+# History:
+# 2015/12/27 Kyle.b Release
+# 
+# 
+source util/common.sh
+source util/install-packages.sh
+source util/msg.sh
+
+source core/signle-install.sh
+source core/master-install.sh
+source core/slave-install.sh
+
+# Install main()
+if [ "$1" == "master-install" ]; then
+	if [ -z "$2" ]; then
+		msg "${MASTER_INFO}" "master-install Usage"
+	else
+		master-install $@
+	fi
+elif [ "$1" == "slave-install" ]; then
+	if [ -z "$2" ]; then
+		msg "${SLAVE_INFO}" "slave-install Usage"
+	else
+		slave-install $@
+	fi
+elif [ "$1" == "signle-install" ]; then
+	if [ -z "$2" ]; then
+		msg "${SIGNLE_INFO}" "signle-install Usage"
+	else
+		signle-install $@
+	fi
+else
+	msg "${MASTER_INFO} ${SLAVE_INFO} ${SIGNLE_INFO}" "Usage"
+fi
