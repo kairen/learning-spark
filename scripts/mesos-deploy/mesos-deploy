@@ -59,16 +59,15 @@ function slave-install {
 	for (( i=2; i<${MASTER_INDEX}; i++ ));
 	do
 		echo "[ ---------------- ${array[$i-1]} ---------------- ]"
-		# scp masters ${array[$i-1]}:~/ &>/dev/null
+		scp masters ${array[$i-1]}:~/ &>/dev/null
    		msg "Installing oracle java8 ....."
-   		# run=$(install_jdk ${array[$i-1]})
+   		run=$(install_jdk ${array[$i-1]})
 
    		msg "Installing apache mesos ....."
-   		# run=$(install_mesos "slave" ${array[$i-1]})
+   		run=$(install_mesos "slave" ${array[$i-1]})
 
    		msg "Configure to mesos-slave env ....."
    		run=$(slave-config ${array[$i-1]})
-   		echo $run
 	done
 	rm ./masters
 }
