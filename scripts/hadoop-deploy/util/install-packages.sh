@@ -15,16 +15,11 @@ function install_jdk {
 	cmd $1 "sudo apt-get -y install oracle-java8-installer &>/dev/null"
 }
 
+function install_other {
+	cmd $1 "sudo apt-get install -y expect &>/dev/null"
+}
 
-function install_mesos {
-	REPOS=$(echo "deb http://repos.mesosphere.com/$(lsb_release -is | tr '[:upper:]' '[:lower:]') $(lsb_release -cs) main")
-	cmd $2 "sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv E56151BF &>/dev/null"
-	echo $REPOS | cmd $2 "sudo tee /etc/apt/sources.list.d/mesosphere.list"
-	cmd $2 "sudo apt-get update &>/dev/null"
-	
-	if [ "$1" == "master" ]; then
-		cmd $2 "sudo apt-get -y install mesos marathon &>/dev/null"
-	else
-		cmd $2 "sudo apt-get -y install mesos &>/dev/null"
-	fi
+function install_hadoop {
+	URL="http://files.imaclouds.com/packages/hadoop/hadoop-${1}.tar.gz"
+	cmd $2 "curl -s qsub $URL | sudo tar -xz -C /opt/"
 }

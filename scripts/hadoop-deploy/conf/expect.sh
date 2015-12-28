@@ -1,0 +1,6 @@
+expect -c "spawn ssh-keygen -t rsa -P \"\"
+expect \"Enter passphrase (empty for no passphrase):\"
+send \"\r\"
+expect \"Enter same passphrase again:\"
+send \"\r\"
+"

@@ -38,10 +38,27 @@ function signle-install {
 	local version=${VERSION:-"2.6.0"}
 	
 	begin=$(max $SPARK_INDEX $VERSION_INDEX)
+
+	if [ -z "${array[$begin+1]}" ]; then
+		msg "No host ..." "ERROR"
+		exit 1
+	fi
+
+   echo $spark $version
+
 	for (( i=$begin+2; i<${arraylength}+1; i++ )); do
 		echo "[ ---------------- ${array[$i-1]} ---------------- ]"
 		msg "Installing oracle java8 ....."
-   		install_jdk ${array[$i-1]} &>/dev/null
+   		# install_jdk ${array[$i-1]} &>/dev/null
+   		
+   		msg "Installing other packages ....."
+   		# install_other ${array[$i-1]} &>/dev/null
+   		
+   		msg "Automatically generated ssh keys ....."
+   		# ssh-config ${array[$i-1]} &>/dev/null
+
+   		msg "Installing Hadoop ....."
+   		install_hadoop ${version} ${array[$i-1]} &>/dev/null
    		
 	done
 }

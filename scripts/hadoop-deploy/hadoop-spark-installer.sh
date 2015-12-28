@@ -37,7 +37,7 @@ fi
 
 
 HOST_NAME=$(hostname)
-echo "127.0.1.1  $HOST_NAME" | sudo tee -a /etc/hosts
+echo "127.0.1.1  $(hostname)" | sudo tee -a /etc/hosts
 
 # install java oracle
 echo "$USER_NAME ALL = (root) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$USER_NAME && sudo chmod 440 /etc/sudoers.d/$USER_NAME
@@ -60,6 +60,7 @@ send \"\r\"
 expect \"Enter same passphrase again:\"
 send \"\r\"
 "
+
 cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
 ssh -o StrictHostKeyChecking=no localhost echo "Login Ok...."
 ssh -o StrictHostKeyChecking=no 0.0.0.0 echo "Login Ok...."
