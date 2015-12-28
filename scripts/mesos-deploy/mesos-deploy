@@ -63,12 +63,10 @@ function slave-install {
 
    		msg "Installing apache mesos ....."
    		run=$(install_mesos "slave" ${array[$i-1]})
-   		echo "$run"
    		
    		msg "Configure to mesos-slave env ....."
    		run=$(slave-config ${MASTER_IPS} ${array[$i-1]})
 	done
-	rm ./masters
 }
 
 # Install main()

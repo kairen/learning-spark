@@ -4,7 +4,7 @@
 # with an optional log level (can be anything, will be prepended to the message)
 #
 # usage: msg 'msg' [level]
-
+# 
 function msg {
     local level=${2:-"INFO"}
     echo "[$level] $1"
@@ -39,6 +39,10 @@ function index {
    			break
    		fi
 	done
+}
+
+function cmd {
+   ssh -o StrictHostKeyChecking=no $1 $2
 }
 
 MASTER_INFO="
