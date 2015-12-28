@@ -61,14 +61,14 @@ function slave-install {
 		echo "[ ---------------- ${array[$i-1]} ---------------- ]"
 		scp masters ${array[$i-1]}:~/ &>/dev/null
    		msg "Installing oracle java8 ....."
-   		run=$(install_jdk ${array[$i-1]})
+   		# run=$(install_jdk ${array[$i-1]})
 
    		msg "Installing apache mesos ....."
    		run=$(install_mesos "slave" ${array[$i-1]})
    		echo "$run"
    		
    		msg "Configure to mesos-slave env ....."
-   		run=$(slave-config ${array[$i-1]})
+   		# run=$(slave-config ${array[$i-1]})
 	done
 	rm ./masters
 }

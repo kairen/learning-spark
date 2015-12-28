@@ -42,5 +42,7 @@ function slave-config {
 	ssh $1 sudo service mesos-master stop &>/dev/null
 	ssh $1 echo manual | sudo tee /etc/init/mesos-master.override
 	ssh $1 sudo service mesos-slave restart &>/dev/null
+
+	ssh $1 rm -rf masters
 }
 

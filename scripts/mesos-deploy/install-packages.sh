@@ -16,13 +16,17 @@ function install_jdk {
 
 
 function install_mesos {
+	echo "deb http://repos.mesosphere.com/$(lsb_release -is | tr '[:upper:]' '[:lower:]') $(lsb_release -cs) main" > mesosphere.list
+	scp mesosphere.list $2:~/
 	ssh $2 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv E56151BF &>/dev/null
-	ssh $2 echo "deb http://repos.mesosphere.com/$(lsb_release -is | tr '[:upper:]' '[:lower:]') $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/mesosphere.list
+	ssh $2 cat mesosphere.list | sudo tee /etc/apt/sources.list.d/mesosphere.list
 	ssh $2 sudo apt-get update &>/dev/null
+	ssh $2 rm -rf mesosphere.list
 
 	if [ "$1" == "master" ]; then
 		ssh $2 sudo apt-get -y install mesos marathon &>/dev/null
 	else
 		ssh $2 sudo apt-get -y install mesos &>/dev/null
 	fi
+	rm -rf mesosphere.list
 }
