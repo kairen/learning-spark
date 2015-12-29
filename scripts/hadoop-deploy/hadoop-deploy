@@ -9,6 +9,7 @@ source util/common.sh
 source util/install-packages.sh
 source util/msg.sh
 source util/config.sh
+source conf/config-env.sh
 
 source core/signle-install.sh
 source core/master-install.sh
