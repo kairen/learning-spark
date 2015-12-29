@@ -28,22 +28,22 @@ function hadoop-env-config {
 	cmd $2 "sudo chown -R $(whoami):$(whoami) /usr/local/hadoop_store"
 
 	
-	ENV_PATH="etc/hadoop/${HADOOP_HOME}${HADOOP_ENV}"
+	ENV_PATH="${HADOOP_HOME}etc/hadoop/${HADOOP_ENV}"
 	echo ${EXPOST} | cmd $2 "sudo tee -a ${ENV_PATH}"
 
-	CORE_PATH="etc/hadoop/${HADOOP_HOME}${CORE_SITE}"
+	CORE_PATH="${HADOOP_HOME}etc/hadoop/${CORE_SITE}"
 	cmd $2  "sudo rm -rf ${CORE_PATH}"
 	CONFIG_CORE_SITE $2 | cmd $2 "sudo tee ${CORE_PATH}"
 
-	HDFS_PATH="etc/hadoop/${HADOOP_HOME}${HDFS_SITE}"
+	HDFS_PATH="${HADOOP_HOME}etc/hadoop/${HDFS_SITE}"
 	cmd $2  "sudo rm -rf ${HDFS_PATH}"
 	CONFIG_HDFS_SITE $2 | cmd $2 "sudo tee ${HDFS_PATH}"
 
-	MAPRED_PATH="etc/hadoop/${HADOOP_HOME}${MAPRED_SITE}"
+	MAPRED_PATH="${HADOOP_HOME}etc/hadoop/${MAPRED_SITE}"
 	cmd $2  "sudo rm -rf ${MAPRED_PATH}"
 	CONFIG_MAPRED_SITE $2 | cmd $2 "sudo tee ${MAPRED_PATH}"
 
-	YARN_PATH="etc/hadoop/${HADOOP_HOME}${YARN_SITE}"
+	YARN_PATH="${HADOOP_HOME}etc/hadoop/${YARN_SITE}"
 	cmd $2  "sudo rm -rf ${YARN_PATH}"
 	CONFIG_YARN_SITE $2 | cmd $2 "sudo tee ${YARN_PATH}"
 }
