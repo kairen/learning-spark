@@ -12,6 +12,13 @@ function ssh-config {
 }
 
 function hadoop-env-config {
+
+	cmd $2 "sudo mkdir -p /usr/local/hadoop_store/tmp"
+	cmd $2 "sudo chown $USER:$USER /usr/local/hadoop_store/tmp"
+	cmd $2 "sudo mkdir -p /usr/local/hadoop_store/hdfs/namenode"
+	cmd $2 "sudo mkdir -p /usr/local/hadoop_store/hdfs/datanode"
+	cmd $2 "sudo chown -R $USER:$USER /usr/local/hadoop_store"
+
 	HDFS_SITE="hdfs-site.xml"
 	CORE_SITE="core-site.xml"
 	MAPRED_SITE="mapred-site.xml"
@@ -21,24 +28,23 @@ function hadoop-env-config {
 	EXPOST="export JAVA_HOME=/usr/lib/jvm/java-8-oracle"
 	HADOOP_HOME="/opt/hadoop-${1}/etc/hadoop/"
 	ENV_PATH="${HADOOP_HOME}${HADOOP_ENV}"
-	echo ${ENV_PATH}
-	# echo ${EXPOST} | cmd $2 "sudo tee -a qsub ${ENV_PATH}"
+	echo ${EXPOST} | cmd $2 "sudo tee -a ${ENV_PATH}"
 
 	CORE_PATH="${HADOOP_HOME}${CORE_SITE}"
-	# CONFIG_CORE_SITE $2 
-	echo ${CORE_PATH}
+	cmd $2  "sudo rm -rf ${CORE_PATH}"
+	CONFIG_CORE_SITE $2 | cmd $2 "sudo tee ${CORE_PATH}"
 
 	HDFS_PATH="${HADOOP_HOME}${HDFS_SITE}"
-	# CONFIG_HDFS_SITE $2 
-	echo ${CORE_PATH}
+	cmd $2  "sudo rm -rf ${HDFS_PATH}"
+	CONFIG_HDFS_SITE $2 | cmd $2 "sudo tee ${HDFS_PATH}"
 
 	MAPRED_PATH="${HADOOP_HOME}${MAPRED_SITE}"
-	# CONFIG_MAPRED_SITE $2 
-	echo ${MAPRED_PATH}
+	cmd $2  "sudo rm -rf ${MAPRED_PATH}"
+	CONFIG_MAPRED_SITE $2 | cmd $2 "sudo tee ${MAPRED_PATH}"
 
 	YARN_PATH="${HADOOP_HOME}${YARN_SITE}"
-	# CONFIG_YARN_SITE $2 
-	echo ${YARN_PATH}
+	cmd $2  "sudo rm -rf ${YARN_PATH}"
+	CONFIG_YARN_SITE $2 | cmd $2 "sudo tee ${YARN_PATH}"
 }
 
 

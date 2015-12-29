@@ -48,16 +48,16 @@ function signle-install {
 		echo "Processing ${array[$i-1]} "
 
 		msg "Installing oracle java8 ....."
-   		# install_jdk ${array[$i-1]} &>/dev/null
+   		install_jdk ${array[$i-1]} &>/dev/null
    		
    		msg "Installing other packages ....."
-   		# install_other ${array[$i-1]} &>/dev/null
+   		install_other ${array[$i-1]} &>/dev/null
    		
    		msg "Automatically generated ssh keys ....."
-   		# ssh-config ${array[$i-1]} &>/dev/null
+   		ssh-config ${array[$i-1]} &>/dev/null
 
    		msg "Installing Hadoop ....."
-   		# install_hadoop ${version} ${array[$i-1]} &>/dev/null
+   		install_hadoop ${version} ${array[$i-1]} &>/dev/null
    		hadoop-env-config ${version} ${array[$i-1]}
    		
    		if [ $spark == "true" ]; then

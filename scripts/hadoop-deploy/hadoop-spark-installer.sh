@@ -91,7 +91,7 @@ echo 'export JAVA_HOME=/usr/lib/jvm/java-7-oracle' >> /opt/$HADOOP_SOURCE_NAME/e
 
 ##core-site.xml
 sudo mkdir -p /app/hadoop/tmp
-sudo chown $USER_NAME:$USER_NAME /app/hadoop/tmp
+sudo chown $USER:$USER /app/hadoop/tmp
 
 echo '<?xml version="1.0"?><?xml-stylesheet type="text/xsl" href="configuration.xsl"?><configuration><property><name>fs.defaultFS</name><value>hdfs://localhost:9000</value></property><property><name>hadoop.tmp.dir</name><value>/app/hadoop/tmp</value><description>A base for other temporary directories.</description></property></configuration>' >> /opt/$HADOOP_SOURCE_NAME/etc/hadoop/core-site.xml
 
@@ -101,7 +101,7 @@ echo '<?xml version="1.0"?><?xml-stylesheet type="text/xsl" href="configuration.
 ##hdfs-site.xml
 sudo mkdir -p /usr/local/hadoop_store/hdfs/namenode
 sudo mkdir -p /usr/local/hadoop_store/hdfs/datanode
-sudo chown -R $USER_NAME:$USER_NAME /usr/local/hadoop_store
+sudo chown -R $USER:$USER /usr/local/hadoop_store
 
 echo '<?xml version="1.0"?><?xml-stylesheet type="text/xsl" href="configuration.xsl"?><configuration><property><name>dfs.replication</name><value>1</value></property><property><name>dfs.namenode.name.dir</name><value>/usr/local/hadoop_store/hdfs/namenode</value></property><property><name>dfs.datanode.data.dir</name><value>/usr/local/hadoop_store/hdfs/datanode</value></property></configuration>' >> /$HADOOP_SOURCE_NAME/etc/hadoop/hdfs-site.xml
 

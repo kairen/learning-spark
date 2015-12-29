@@ -9,8 +9,7 @@ function CONFIG_CORE_SITE {
 
 local HOST=${1:-"localhost"}
 
-echo "
-<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>
 <configuration>
 <property>
@@ -23,7 +22,7 @@ echo "
 </property>
 <property>
     <name>hadoop.tmp.dir</name>
-    <value>/app/hadoop/tmp</value>
+    <value>/usr/local/hadoop_store/tmp</value>
 </property>
 <property>
     <name>hadoop.proxyuser.hduser.hosts</name>
@@ -33,48 +32,51 @@ echo "
     <name>hadoop.proxyuser.hduser.groups</name>
     <value>*</value>
 </property>
-</configuration>
-"
+</configuration>"
 }
 
 # 
 # Configuration Hadoop core site
 # 
 function CONFIG_HDFS_SITE {
-echo "
-<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+
+local HOST=${1:-"localhost"}
+local REPLICA=${2:-"1"}
+
+echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>
 <configuration>
 <property>
     <name>dfs.namenode.secondary.http-address</name>
-    <value>HMaster:9001</value>
+    <value>${HOST}:9001</value>
 </property>
 <property>
     <name>dfs.namenode.name.dir</name>
-    <value>file:/home/hadoop/hadoop/dfs/name</value>
+    <value>/usr/local/hadoop_store/hdfs/namenode</value>
 </property>
 <property>
     <name>dfs.datanode.data.dir</name>
-    <value>file:/home/hadoop/hadoop/dfs/data</value>
+    <value>/usr/local/hadoop_store/hdfs/datanode</value>
 </property>
 <property>
     <name>dfs.replication</name>
-    <value>1</value>
+    <value>${REPLICA}</value>
 </property>
 <property>
     <name>dfs.webhdfs.enabled</name>
     <value>true</value>
 </property>
-</configuration>
-"
+</configuration>"
 }
 
 # 
 # Configuration Hadoop core site
 # 
 function CONFIG_MAPRED_SITE {
-echo "
-<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+
+local HOST=${1:-"localhost"}
+
+echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>
 <configuration>
 <property>
@@ -83,22 +85,23 @@ echo "
 </property>
 <property>
     <name>mapreduce.jobhistory.address</name>
-    <value>HMaster:10020</value>
+    <value>${HOST}:10020</value>
 </property>
 <property>
     <name>mapreduce.jobhistory.webapp.address</name>
-    <value>HMaster:19888</value>
+    <value>${HOST}:19888</value>
 </property>
-</configuration>
-"
+</configuration>"
 }
 
 # 
 # Configuration Hadoop core site
 # 
 function CONFIG_YARN_SITE {
-echo "
-<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+
+local HOST=${1:-"localhost"}
+
+echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>
 <configuration>
 <property>
@@ -111,24 +114,23 @@ echo "
 </property>
 <property>
     <name>yarn.resourcemanager.address</name>
-    <value>HMaster:8032</value>
+    <value>${HOST}:8032</value>
 </property>
 <property>
     <name>yarn.resourcemanager.scheduler.address</name>
-    <value>HMaster:8030</value>
+    <value>${HOST}:8030</value>
 </property>
 <property>
     <name>yarn.resourcemanager.resource-tracker.address</name>
-    <value>HMaster:8031</value>
+    <value>${HOST}:8031</value>
 </property>
 <property>
     <name>yarn.resourcemanager.admin.address</name>
-    <value>HMaster:8033</value>
+    <value>${HOST}:8033</value>
 </property>
 <property>
     <name>yarn.resourcemanager.webapp.address</name>
-    <value>HMaster:8088</value>
+    <value>${HOST}:8088</value>
 </property>
-</configuration>
-"
+</configuration>"
 }
