@@ -4,12 +4,12 @@
 # History:
 # 2015/12/21 Kyle.b Release
 # 
-source common.sh
-source install-packages.sh
-source config.sh
+source util/common.sh
+source util/install-packages.sh
+source util/mesos-config.sh
+source util/msg.sh
 
 function master-install {
-	
 	array=("$@")
 	arraylength=${#array[@]}
 	for (( i=2; i<${arraylength}+1; i++ ));

@@ -4,7 +4,7 @@
 # History:
 # 2015/12/21 Kyle.b Release
 # 
-source common.sh
+source util/common.sh
 
 function install_jdk {
 	cmd $1 "sudo apt-get purge openjdk* &>/dev/null"

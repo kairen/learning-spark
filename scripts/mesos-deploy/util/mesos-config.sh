@@ -4,7 +4,6 @@
 # History:
 # 2015/12/21 Kyle.b Release
 # 
-source common.sh
 
 function master-config {
 	# Configure zookeeper
