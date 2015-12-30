@@ -36,7 +36,7 @@ $ sudo apt-get -y install oracle-java8-installer
 
 192.168.1.10 mesos-master
 192.168.1.11 mesos-slave-1
-192.168.1.11 mesos-slave-2
+192.168.1.12 mesos-slave-2
 ```
 
 並在```Master```節點複製所有```Slave```的 ssh key：
