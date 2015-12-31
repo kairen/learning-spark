@@ -46,24 +46,33 @@ function signle-install {
 
 	for (( i=$begin+2; i<${arraylength}+1; i++ )); do
 		echo "Processing ${array[$i-1]} "
-
+		ProgressBar 5 25
 		msg "Installing oracle java8 ....."
    		install_jdk ${array[$i-1]} &>/dev/null
    		
+   		ProgressBar 10 25
    		msg "Installing other packages ....."
    		install_other ${array[$i-1]} &>/dev/null
    		
+   		ProgressBar 15 25
    		msg "Automatically generated ssh keys ....."
    		ssh-config ${array[$i-1]} &>/dev/null
 
+   		ProgressBar 20 25
    		msg "Installing Hadoop ....."
    		install_hadoop ${version} ${array[$i-1]} &>/dev/null
    		hadoop-env-config ${version} ${array[$i-1]} &>/dev/null
    		
+   		ProgressBar 23 25
    		if [ $spark == "true" ]; then
    			msg "Installing Spark ...."
+   			install_spark "1.5.2" ${array[$i-1]} &>/dev/null
+   			spark-env-config ${version} ${array[$i-1]} &>/dev/null
    		fi
+   		ProgressBar 25 25
+   		msg "Install Finish ...."
 
-   		msg "Finish ...."
+   		msg "Now, Using \"/opt/hadoop-${version}/sbin/start-all.sh\" to start service ..."
+   		msg "Then, Using \"source ~/.bashrc\" to source env ..."
 	done
 }

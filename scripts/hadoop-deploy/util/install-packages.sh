@@ -16,10 +16,17 @@ function install_jdk {
 }
 
 function install_other {
-	cmd $1 "sudo apt-get install -y expect &>/dev/null"
+	cmd $1 "sudo apt-get install -y expect "
 }
 
 function install_hadoop {
 	URL="http://files.imaclouds.com/packages/hadoop/hadoop-${1}.tar.gz"
+	cmd $2 "curl -s $URL | sudo tar -xz -C /opt/ "
+}
+
+function install_spark {
+	local spark_version=${1:-"1.5.2"}
+	URL="http://files.imaclouds.com/packages/hadoop-spark/spark-${spark_version}-bin-hadoop2.6.tgz"
 	cmd $2 "curl -s $URL | sudo tar -xz -C /opt/"
+	cmd $2 "sudo mv /opt/spark-${spark_version}-bin-hadoop2.6 /opt/spark"
 }
