@@ -71,7 +71,7 @@ $ ./mesos-deploy slave-install 192.168.1.11 192.168.1.12 --masters 192.168.1.10
 ```
 > 目前部署必須輸入```--masters``` 參數來配置 Masters 節點，該參數可以為多個 Master 節點
 
-### Verifying Installation
+### 驗證安裝
 當安裝完成，我們要驗證系統是否正常運行，可以在```master```節點透過以下指令驗證：
 ```sh
 MASTER=$(mesos-resolve `cat /etc/mesos/zk`)
