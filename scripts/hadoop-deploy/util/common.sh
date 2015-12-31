@@ -68,7 +68,7 @@ _start=1
 # This accounts as the "totalState" variable for the ProgressBar function
 _end=100
 
-# # Proof of concept
+# Proof of concept
 # for number in $(seq ${_start} ${_end})
 # do
 #     sleep 0.1

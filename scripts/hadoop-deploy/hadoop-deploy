@@ -11,7 +11,6 @@ source util/msg.sh
 source util/config.sh
 source conf/config-env.sh
 
-source core/signle-install.sh
 source core/master-install.sh
 source core/slave-install.sh
 
@@ -27,12 +26,6 @@ elif [ "$1" == "slave-install" ]; then
 		msg "${SLAVE_INFO}" "slave-install Usage"
 	else
 		slave-install $@
-	fi
-elif [ "$1" == "signle-install" ]; then
-	if [ -z "$2" ]; then
-		msg "${SIGNLE_INFO}" "signle-install Usage"
-	else
-		signle-install $@
 	fi
 else
 	msg "${MASTER_INFO} ${SLAVE_INFO} ${SIGNLE_INFO}" "Usage"
