@@ -87,6 +87,4 @@ function slave-install {
 
 	hadoop-slave-config ${version} ${master} ${SLAVES} &>/dev/null
 	msg "Now, Using \"/opt/hadoop-${version}/sbin/start-all.sh\" to start service ..."
-   	msg "Then, Using \"source ~/.bashrc\" to source env ..."
-   		
 }

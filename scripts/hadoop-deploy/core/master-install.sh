@@ -90,5 +90,4 @@ function master-install {
 	done
 
 	msg "Now, Using \"/opt/hadoop-${version}/sbin/start-all.sh\" to start service ..."
-   	msg "Then, Using \"source ~/.bashrc\" to source env ..."
 }

@@ -26,7 +26,7 @@ $ ssh-copy-id localhost
 10.21.20.249 hadoop-slave-2
 10.21.20.207 hadoop-slave-3
 ```
-並在 Master 節點複製所有Slave的 ssh key：
+並在 Master 或 Deploy 節點複製所有 Slave 的 ssh key：
 ```sh
 $ ssh-copy-id ubuntu@hadoop-slave-1
 $ ssh-copy-id ubuntu@hadoop-slave-2
@@ -45,7 +45,7 @@ Host hadoop-slave-2
 ```
 > 當然也可以不要使用 Host Name，直接輸入 IP。
 
-於 Master 節點下載該腳本專案：
+於 Master 或 Deploy 節點下載該腳本專案：
 ```sh
 $ git clone https://github.com/imac-cloud/Spark-tutorial.git
 ```
@@ -76,7 +76,6 @@ Progress : [################################--------] 80%  [INFO] Installing Had
 Progress : [####################################----] 92%  [INFO] Installing Spark ....
 Progress : [########################################] 100%  [INFO] Install Finish ....
 [INFO] Now, Using "/opt/hadoop-2.6.0/sbin/start-all.sh" to start service ...
-[INFO] Then, Using "source ~/.bashrc" to source env ...
 ```
 > ```--spark```為是否要安裝 Spark，```--version```為 Hadoop 版本號。
 
