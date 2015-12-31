@@ -77,7 +77,7 @@ function slave-install {
    		ProgressBar 20 25
    		msg "Installing Hadoop ....."
    		install_hadoop ${version} ${array[$i-1]} &>/dev/null
-   		hadoop-env-config ${version} ${array[$i-1]} ${master} &>/dev/nullｓ
+   		hadoop-env-config ${version} ${array[$i-1]} ${master} &>/dev/null
 
    		ProgressBar 25 25
    		msg "Install Finish ...."

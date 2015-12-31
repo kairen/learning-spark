@@ -22,6 +22,7 @@ function hadoop-env-config {
     USER_NAEM=$(cmd $2 'echo $(whoami)')
 
 	cmd $2 "sudo chown -R ${USER_NAEM}:${USER_NAEM} ${HADOOP_HOME}"
+	cmd $2 "sudo rm -rf /usr/local/hadoop_store"
 	cmd $2 "sudo mkdir -p /usr/local/hadoop_store/tmp"
 	cmd $2 'sudo chown $(whoami):$(whoami) /usr/local/hadoop_store/tmp'
 	cmd $2 "sudo mkdir -p /usr/local/hadoop_store/hdfs/namenode"
