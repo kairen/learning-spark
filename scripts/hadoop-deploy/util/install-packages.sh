@@ -20,6 +20,7 @@ function install_other {
 }
 
 function install_hadoop {
+	cmd $2 "sudo rm -rf /hadoop/hadoop-${1}"
 	URL="http://files.imaclouds.com/packages/hadoop/hadoop-${1}.tar.gz"
 	cmd $2 "curl -s $URL | sudo tar -xz -C /opt/ "
 }
