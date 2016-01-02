@@ -4,55 +4,29 @@
 # History:
 # 2015/12/27 Kyle.b Release
 # 
-function check_para {
-  array=("$@")
-  arraylength=${#array[@]}
-
-  for (( i=1; i<${arraylength}+1; i++ )); do
-    if echo ${array[$i-1]} | grep -q "\-\-" ; then
-      if [ "${array[$i-1]}" != "--master" ] && [ "${array[$i-1]}" != "--version" ]; then
-        msg "Option: \"${array[$i-1]}\" not a valid  option ..." "ERROR"
-        exit 1
-      fi
-    fi
-  done
-}
-
+# 
 function slave-install {
 	array=("$@")
 	arraylength=${#array[@]}
 
-	check_para $@
-
+	CHECK_OPTIONS=("--master" "--hbase" "--version" "--ignore")
+	check_options $@
+	
 	MASTER_INDEX=$(index "--master" ${array[@]})
 	VERSION_INDEX=$(index "--version" ${array[@]})
+	IGNORE_INDEX=$(index "--ignore" ${array[@]})
+	HBASE_INDEX=$(index "--hbase" ${array[@]})
 
-	MASTER=""
-	if [ $MASTER_INDEX -gt 0 ]; then
-		ARGS="${array[$MASTER_INDEX]}"
-		if [ "$ARGS" != "" ]; then
-			MASTER=${array[$MASTER_INDEX]}
-		else
-			msg "Option: --master value error ..." "ERROR"
-			exit 1
-		fi
-	fi
+	check_value $MASTER_INDEX "${array[MASTER_INDEX]}" "--master"
+	MASTER=${RETURE_VALUE}
 
-	VERSION=""
-	if [ $VERSION_INDEX -gt 0 ]; then
-		ARGS="${array[$VERSION_INDEX]}"
-		if [ "$ARGS" != "" ] && echo $ARGS | grep -q "[0-9].[0-9].[0-9]" ; then
-			VERSION=${array[$VERSION_INDEX]}
-		else
-			msg "Option: --version value error ..." "ERROR"
-			exit 1
-		fi
-	fi
-
+	check_pattern $VERSION_INDEX "[0-9].[0-9].[0-9]" "${array[VERSION_INDEX]}" "--version"
+	VERSION=${RETURE_VALUE}
+	
 	local version=${VERSION:-"2.6.0"}
 	local master=${MASTER}
 	
-	begin=$(max $MASTER_INDEX $VERSION_INDEX)
+	begin=$(max $MASTER_INDEX $VERSION_INDEX $IGNORE_INDEX $HBASE_INDEX)
 
 	if [ -z "${array[$begin+1]}" ]; then
 		msg "No slave host ..." "ERROR"

@@ -1,10 +1,11 @@
 #!/bin/bash
 # Program:
-#       This program is install mesos.
+#       This program is Hadoop configuration
 # History:
 # 2015/12/28 Kyle.b Release
 # 
 # Configuration Hadoop core site
+# 
 function CONFIG_CORE_SITE {
 
 local HOST=${1:-"localhost"}

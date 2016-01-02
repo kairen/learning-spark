@@ -4,50 +4,21 @@
 # History:
 # 2015/12/27 Kyle.b Release
 # 
-function check_para {
-  array=("$@")
-  arraylength=${#array[@]}
-
-  for (( i=1; i<${arraylength}+1; i++ )); do
-    if echo ${array[$i-1]} | grep -q "\-\-" ; then
-      if [ "${array[$i-1]}" != "--spark" ] && [ "${array[$i-1]}" != "--version" ]; then
-        msg "Option: \"${array[$i-1]}\" not a valid  option ..." "ERROR"
-        exit 1
-      fi
-    fi
-  done
-}
-
 function master-install {
 	array=("$@")
 	arraylength=${#array[@]}
 
-	check_para $@
+	CHECK_OPTIONS=("--spark" "--hbase" "--version" "--ignore")
+	check_options $@
 	
 	SPARK_INDEX=$(index "--spark" ${array[@]})
 	VERSION_INDEX=$(index "--version" ${array[@]})
 
-	SPARK=""
-	if [ $SPARK_INDEX -gt 0 ]; then
-		ARGS="${array[$SPARK_INDEX]}"
-		if [ "$ARGS" != "" ] && ([ "$ARGS" == "true" ] || [ "$ARGS" == "false" ]); then
-			SPARK=${array[$SPARK_INDEX]}
-		else
-			msg "Option: --spark value error ..." "ERROR"
-			exit 1
-		fi
-	fi
+	check_bool ${SPARK_INDEX} "${array[SPARK_INDEX]}" "--spark"
+	SPARK=${RETURE_VALUE}
 
-	VERSION=""
-	if [ $VERSION_INDEX -gt 0 ]; then
-		ARGS="${array[$VERSION_INDEX]}"
-		if [ "$ARGS" != "" ] && echo $ARGS | grep -q "[0-9].[0-9].[0-9]" ; then
-			VERSION=${array[$VERSION_INDEX]}
-		else
-			msg "Option: --version value error ..." "ERROR"
-			exit 1
-		fi
-	fi
+	check_pattern ${VERSION_INDEX} "[0-9].[0-9].[0-9]" "${array[VERSION_INDEX]}" "--version"
+	VERSION=${RETURE_VALUE}
 
 	local spark=${SPARK:-"true"}
 	local version=${VERSION:-"2.6.0"}

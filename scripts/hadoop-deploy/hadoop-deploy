@@ -8,8 +8,8 @@
 source util/common.sh
 source util/install-packages.sh
 source util/msg.sh
-source util/config.sh
-source conf/config-env.sh
+source util/config-tool.sh
+source conf/hadoop-config.sh
 
 source core/master-install.sh
 source core/slave-install.sh
