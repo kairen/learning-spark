@@ -39,3 +39,14 @@ function install_hbase {
 	URL="http://files.imaclouds.com/packages/hadoop/hbase-1.1.2-bin.tar.gz"
 	cmd $2 "curl -s $URL | sudo tar -xz -C /opt/"
 }
+
+function install_hive {
+	MYSQL_PASSWD="mysql-server mysql-server/root_password password passwd"
+	MYSQL_AGAIN_PASSWD="mysql-server mysql-server/root_password_again password passwd"
+	echo ${MYSQL_PASSWD} | cmd $2 "sudo debconf-set-selections"
+	echo ${MYSQL_AGAIN_PASSWD} | cmd $2 "sudo debconf-set-selections"
+
+	cmd $2 "sudo apt-get install -y libmysql-java mysql-server"
+	URL="http://files.imaclouds.com/packages/hadoop/hive-1.2.1-bin.tar.gz"
+	cmd $2 "curl -s $URL | sudo tar -xz -C /opt/"
+}

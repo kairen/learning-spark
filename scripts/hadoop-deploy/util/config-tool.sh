@@ -113,3 +113,15 @@ function hbase-slave-config {
 	cmd $1  "sudo rm -rf ${SLAVES_PATH}"
 	echo -e $2 | cmd $1 "sudo tee ${SLAVES_PATH}"
 }
+
+function hive-config {
+	cmd $2 "sudo mv /opt/apache-hive-1.2.1-bin /opt/hive"
+
+	HBASE_HOME="/opt/hive"
+	MYSQL_JAR_PATH="/usr/share/java/mysql-connector-java-5.1.28.jar"
+
+	cmd $2 "sudo cp ${MYSQL_JAR_PATH} ${HBASE_HOME}/lib"
+
+	echo "export HIVE_HOME=$HIVE_HOME" | cmd $2 "sudo tee -a ~/.bashrc"
+	echo "export PATH=\$PATH:\$HIVE_HOME/bin" | cmd $2 "sudo tee -a ~/.bashrc"
+}
