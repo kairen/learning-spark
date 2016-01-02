@@ -33,7 +33,9 @@ function install_spark {
 }
 
 function install_hbase {
-	cmd $2 "sudo apt-get install -y zookeeper zookeeperd"
+	if [ "$1" == "true" ]; then
+		cmd $2 "sudo apt-get install -y zookeeper zookeeperd"
+	fi
 	URL="http://files.imaclouds.com/packages/hadoop/hbase-1.1.2-bin.tar.gz"
 	cmd $2 "curl -s $URL | sudo tar -xz -C /opt/"
 }

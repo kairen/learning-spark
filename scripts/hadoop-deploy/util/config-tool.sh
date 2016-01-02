@@ -73,7 +73,6 @@ function spark-env-config {
 
 function hadoop-slave-config {
 	HADOOP_HOME="/opt/hadoop-${1}"
-	USER_NAEM=$(cmd $2 'echo $(whoami)')
 
 	SLAVES_NAME="slaves"
 	SLAVES_PATH="${HADOOP_HOME}/etc/hadoop/${SLAVES_NAME}"
@@ -81,3 +80,36 @@ function hadoop-slave-config {
 	echo -e $3 | cmd $2 "sudo tee ${SLAVES_PATH}"
 }
 
+function hbase-config {
+	if [ "$1" == "true" ]; then
+		echo "server.1=${2}:2888:3888" | cmd $2 "sudo tee -a /etc/zookeeper/conf/zoo.cfg"
+		echo "1" | cmd $2 "sudo tee /etc/zookeeper/conf/myid"
+		cmd $2 "sudo service zookeeper restart"
+	fi
+	
+	HBASE_SITE="hbase-site.xml"
+	HBASE_HOME="/opt/hbase-1.1.2"
+	USER_NAEM=$(cmd $2 'echo $(whoami)')
+
+	cmd $2 "sudo chown -R ${USER_NAEM}:${USER_NAEM} ${HBASE_HOME}"
+
+	EXPOST="export JAVA_HOME=/usr/lib/jvm/java-8-oracle"
+	MANAGES_ZK="export HBASE_MANAGES_ZK=false"
+	echo ${EXPOST} | cmd $2 "sudo tee -a ${HBASE_HOME}/conf/hbase-env.sh"
+	echo ${MANAGES_ZK} | cmd $2 "sudo tee -a ${HBASE_HOME}/conf/hbase-env.sh"
+
+	HBASE_SITE_PATH="${HBASE_HOME}/conf/${HBASE_SITE}"
+	CONFIG_HBASE_SITE $3 | cmd $2 "sudo tee ${HBASE_SITE_PATH}"
+
+	echo "export HBASE_HOME=$HBASE_HOME" | cmd $2 "sudo tee -a ~/.bashrc"
+	echo "export PATH=\$PATH:\$HBASE_HOME/bin" | cmd $2 "sudo tee -a ~/.bashrc"
+}
+
+function hbase-slave-config {
+	HBASE_HOME="/opt/hbase-1.1.2"
+
+	SLAVES_NAME="regionservers"
+	SLAVES_PATH="${HBASE_HOME}/conf/${SLAVES_NAME}"
+	cmd $1  "sudo rm -rf ${SLAVES_PATH}"
+	echo -e $2 | cmd $1 "sudo tee ${SLAVES_PATH}"
+}

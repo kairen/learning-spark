@@ -1,6 +1,5 @@
 # Hadoop YARN Installer 
-Using shell script to install Hadoop YARN and DFS cluster.
-
+本腳本為部署 Hadoop 叢集使用，分別針對 Hadoop-master 與 Hadoop-slave 進行部署，用以提升部署測試用大型叢集的效率。
 
 ## 快速開始
 ### 事前準備
@@ -53,14 +52,21 @@ $ git clone https://github.com/imac-cloud/Spark-tutorial.git
 ### 腳本使用方式
 進入 ```Spark-tutorial/scripts/hadoop-deploy/```目錄，並執行```./hadoop-deploy```腳本，若沒輸入任何參數會看到該腳本使用方式：
 ```sh
-[Usage]
-hadoop-deploy master-install {host1, host2, hosts}     # Install a master node and all-in-one hadoop node
-              --spark {true}                           # Install spark to node, the default is false
-              --version {2.6.0}                        # Install version, the default is 2.6.0
+hadoop-deploy master-install [options] {host1, ...}   # Install a master node and all-in-one hadoop node
 
-hadoop-deploy slave-install {host1, host2, hosts}      # Install some slaves node
-              --master {master}                        # Add some master to slaves
-              --version {2.6.0}                        # Install version, the default is 2.6.0
+Options:
+        --spark {true}                                # Install spark to node,  default is false
+        --hbase {false}                               # Install hbase to node, default is false
+        --version {2.6.0}                             # Install version, default is 2.6.0
+        --ignore {false}                              # Ignore install step, default is false
+
+hadoop-deploy slave-install [options] {host1, ...}     # Install some slaves node
+
+Options:
+        --hbase {false}                                # Install hbase to node, default is false
+        --master {master}                              # Add some master to slaves
+        --version {2.6.0}                              # Install version, default is 2.6.0
+        --ignore {false}                               # Ignore install step, default is false
 ```
 
 ### 部署 Hadoop master
@@ -75,7 +81,9 @@ Progress : [########################----------------] 60%  [INFO] Automatically 
 Progress : [################################--------] 80%  [INFO] Installing Hadoop .....
 Progress : [####################################----] 92%  [INFO] Installing Spark ....
 Progress : [########################################] 100%  [INFO] Install Finish ....
-[INFO] Now, Using "/opt/hadoop-2.6.0/sbin/start-all.sh" to start service ...
+[INFO] Using "/opt/hadoop-2.6.0/sbin/start-all.sh" to start service ...
+[INFO] Using "hadoop fs -mkdir /hbase" to create hbase dir on HDFS ...
+[INFO] Using "/opt/hbase-1.1.2/bin/start-hbase.sh" to start service ...
 ```
 > ```--spark```為是否要安裝 Spark，```--version```為 Hadoop 版本號。
 

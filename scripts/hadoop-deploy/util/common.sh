@@ -46,17 +46,18 @@ function max {
 }
 
 function ProgressBar {
-    let _progress=(${1}*100/${2}*100)/100
-    let _done=(${_progress}*4)/10
-    let _left=40-$_done
+  let _progress=(${1}*100/${2}*100)/100
+  let _done=(${_progress}*4)/10
+  let _left=40-$_done
 
-    _start=1
-    _end=100
+  _start=1
+  _end=100
 
-    _fill=$(printf "%${_done}s")
-    _empty=$(printf "%${_left}s")
+  _fill=$(printf "%${_done}s")
+  _empty=$(printf "%${_left}s")
+  # _info=$(printf "${3}")
 
-printf "\rProgress : [${_fill// /#}${_empty// /-}] ${_progress}%%  "
+  printf "\rProgress : [${_fill// /#}${_empty// /-}] ${_progress}%% "
 }
 
 CHECK_OPTIONS=()
@@ -88,6 +89,7 @@ function check_value {
   INDEX=${1}
   VALUE=${2}
   OPTION=${3}
+  RETURE_VALUE=""
 
   if [ ${INDEX} -gt 0 ]; then
     if [ "${VALUE}" == "" ]; then
@@ -103,6 +105,7 @@ function check_bool {
   INDEX=${1}
   VALUE=${2}
   OPTION=${3}
+  RETURE_VALUE=""
 
   if [ ${INDEX} -gt 0 ]; then
     if [ "${VALUE}" == "" ] || ([ "${VALUE}" != "true" ] && [ "${VALUE}" != "false" ]); then
@@ -119,6 +122,7 @@ function check_pattern {
   PATTERN=${2}
   VALUE=${3}
   OPTION=${4}
+  RETURE_VALUE=""
 
   if [ ${INDEX} -gt 0 ]; then
     if [ "${VALUE}" != "" ] && echo ${VALUE} | grep -q "${PATTERN}" ; then
