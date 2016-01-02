@@ -38,10 +38,11 @@ $ git clone https://github.com/imac-cloud/Spark-tutorial.git
 進入 ```Spark-tutorial/scripts/mesos-deploy/```目錄，並執行```./mesos-deploy```腳本，若沒輸入任何參數會看到該腳本使用方式：
 ```sh
 [Usage]
-mesos-deploy master-install {host1, host2, hosts}      # installing a master node
+mesos-deploy master-install {host1, ...}             # installing a master node
 
-mesos-deploy slave-install {host1, host2, hosts}       # installing some slaves node
-  Arguments: --masters {master1, master2, masters}     # add some masters to slaves
+mesos-deploy slave-install {host1, ...} [options]    # installing some slaves node
+Options:
+        --masters {master1, ...}                     # add some masters to slaves
 ```
 
 ### 部署 Masters

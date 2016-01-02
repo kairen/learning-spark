@@ -9,65 +9,6 @@ source util/install-packages.sh
 source util/mesos-config.sh
 source util/msg.sh
 
-function master-install {
-	array=("$@")
-	arraylength=${#array[@]}
-	for (( i=2; i<${arraylength}+1; i++ ));
-	do
-   		echo "[ ---------------- ${array[$i-1]} ---------------- ]"
-   		msg "Installing oracle java8 ....."
-   		run=$(install_jdk ${array[$i-1]})
-
-   		msg "Installing apache mesos ....."
-   		run=$(install_mesos "master" ${array[$i-1]})
-
-   		msg "Configure to mesos-master env ....."
-   		run=$(master-config ${array[$i-1]})
-
-   		msg "Finish install ....."
-	done
-}
-
-function slave-install {
-	array=("$@")
-	arraylength=${#array[@]}
-	MASTER_INDEX=$(index "--masters" ${array[@]})
-
-	if [ -z $MASTER_INDEX ]; then
-		msg "${SLAVE_INFO}" "Usage"
-		exit 1
-	fi
-
-	if [ -z "${array[$MASTER_INDEX]}" ]; then
-		msg "${SLAVE_INFO}" "Usage"
-		exit 1
-	fi
-
-	# Get all master node
-	MASTER_IPS=""
-	for (( i=MASTER_INDEX+1; i<${arraylength}+1; i++ ));
-	do
-   		if [ $i == ${arraylength} ]; then
-   			MASTER_IPS="${MASTER_IPS}${array[$i-1]}:2181"
-   		else
-   			MASTER_IPS="${MASTER_IPS}${array[$i-1]}:2181,"
-   		fi
-	done
-
-	# Get all slave node
-	for (( i=2; i<${MASTER_INDEX}; i++ ));
-	do
-		echo "[ ---------------- ${array[$i-1]} ---------------- ]"
-   		msg "Installing oracle java8 ....."
-   		run=$(install_jdk ${array[$i-1]})
-
-   		msg "Installing apache mesos ....."
-   		run=$(install_mesos "slave" ${array[$i-1]})
-   		
-   		msg "Configure to mesos-slave env ....."
-   		run=$(slave-config ${MASTER_IPS} ${array[$i-1]})
-	done
-}
 
 # Install main()
 if [ "$1" == "master-install" ]; then
