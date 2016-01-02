@@ -51,13 +51,13 @@ function slave-install {
 	for (( i=$begin+2; i<${arraylength}+1; i++ )); do
 		echo "Processing ${array[$i-1]} "
 		ProgressBar 5 25
-		msg "Installing oracle java8 .."
+		msg "Installing oracle java 8 .."
    		install_jdk ${array[$i-1]} &>/dev/null
    		
    		ProgressBar 10 25
    		msg "Installing other packages .."
    		install_other ${array[$i-1]} &>/dev/null
-   		
+   		 
    		ProgressBar 15 25
    		msg "Automatically generated ssh keys .."
    		ssh-config ${array[$i-1]} &>/dev/null

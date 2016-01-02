@@ -10,6 +10,7 @@ hadoop-deploy master-install [options] {host1, ...}   # Install a master node an
 Options:
         --spark {true}                                # Install spark to node,  default is false
         --hbase {false}                               # Install hbase to node, default is false
+        --hive {false}                                # Install hive to node, default is false
         --version {2.6.0}                             # Install version, default is 2.6.0
         --ignore {false}                              # Ignore install step, default is false
 "
@@ -19,6 +20,7 @@ hadoop-deploy slave-install [options] {host1, ...}     # Install some slaves nod
 
 Options:
         --hbase {false}                                # Install hbase to node, default is false
+        --hive {false}                                # Install hive to node, default is false
         --master {master}                              # Add some master to slaves 
         --version {2.6.0}                              # Install version, default is 2.6.0
         --ignore {false}                               # Ignore install step, default is false
