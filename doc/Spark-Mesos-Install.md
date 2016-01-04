@@ -187,7 +187,7 @@ $ cp spark-env.sh.template spark-env.sh
 在```spark-env.sh```這內容最下方增加這幾筆環境參數：
 ```sh
 export MESOS_NATIVE_JAVA_LIBRARY="/usr/lib/libmesos.so"
-export MASTER="mesos://10.26.1.161:5050"
+export MASTER="mesos://192.168.1.10:5050"
 export SPARK_EXECUTOR_URI="/opt/spark-1.5.2.tgz"
 
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")
@@ -197,16 +197,28 @@ export SPARK_LOCAL_HOSTNAME=$(ifconfig eth0 | awk '/inet addr/{print substr($2,6
 ```
 > 若是多個 Master 採用以下方式```mesos://zk://192.168.100.7:2181,192.168.100.8:2181,192.168.100.9:2181/mesos```。
 
-接著壓縮 ```/opt/spark```資料夾：
+接著下載一個新的'''spark-1.5.2-bin-hadoop2.6.tgz```，並解壓縮：
 ```sh
-cd /opt
-sudo tar -czvf spark-1.5.2.tgz spark/
+$ cd ~/
+$ wget http://files.imaclouds.com/packages/hadoop-spark/spark-1.5.2-bin-hadoop2.6.tgz
+$ tar -xvf spark-1.5.2-bin-hadoop2.6.tgz
+$ sudo mv spark-1.5.2-bin-hadoop2.6 spark-1.5.2
+$ sudo vim spark-1.5.2/conf/spark-env.sh
+export MESOS_NATIVE_LIBRARY=/usr/local/lib/libmesos.so
+export SPARK_EXECUTOR_URI="/opt/spark-1.5.2.tgz"
+export MASTER=mesos://192.168.1.10:5050
+export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")
 ```
+完成後壓縮資料夾：
+```sh
+$ sudo tar -czvf spark-1.5.2.tgz spark-1.5.2/
 
+```
 並在```Master```節點複製到所有```Slave```：
 ```sh
-$ scp spark-1.5.2.tgz mesos-slave-1
-$ scp spark-1.5.2.tgz mesos-slave-2
+$ scp spark-1.5.2.tgz mesos-slave-1:~/ && ssh mesos-slave-1 sudo mv ~/spark-1.5.2.tgz /opt
+$ scp spark-1.5.2.tgz mesos-slave-2:~/ && ssh mesos-slave-2 sudo mv ~/spark-1.5.2.tgz /opt
+$
 ```
 
 設定使用者環境參數：
@@ -225,7 +237,7 @@ distData.filter(_< 10).collect()
 或使用範例程式提交 Job：
 ```sh
 $ spark-submit --class org.apache.spark.examples.SparkPi \
---master mesos://192.168.1.34:5050 \
+--master mesos://192.168.1.10:5050 \
 --num-executors 1 \
 --executor-memory 1g \
 --executor-cores 1 \
