@@ -44,3 +44,18 @@ function index {
 function cmd {
    ssh -o StrictHostKeyChecking=no $1 $2
 }
+
+function ProgressBar {
+  let _progress=(${1}*100/${2}*100)/100
+  let _done=(${_progress}*4)/10
+  let _left=40-$_done
+
+  _start=1
+  _end=100
+
+  _fill=$(printf "%${_done}s")
+  _empty=$(printf "%${_left}s")
+  # _info=$(printf "${3}")
+
+  printf "\rProgress : [${_fill// /#}${_empty// /-}] ${_progress}%% "
+}

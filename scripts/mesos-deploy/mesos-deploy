@@ -9,6 +9,9 @@ source util/install-packages.sh
 source util/mesos-config.sh
 source util/msg.sh
 
+source core/master-install.sh
+source core/slave-install.sh
+
 
 # Install main()
 if [ "$1" == "master-install" ]; then

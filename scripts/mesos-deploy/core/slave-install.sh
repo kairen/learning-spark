@@ -21,8 +21,7 @@ function slave-install {
 
 	# Get all master node
 	MASTER_IPS=""
-	for (( i=MASTER_INDEX+1; i<${arraylength}+1; i++ ));
-	do
+	for (( i=MASTER_INDEX+1; i<${arraylength}+1; i++ )); do
    		if [ $i == ${arraylength} ]; then
    			MASTER_IPS="${MASTER_IPS}${array[$i-1]}:2181"
    		else
@@ -31,16 +30,22 @@ function slave-install {
 	done
 
 	# Get all slave node
-	for (( i=2; i<${MASTER_INDEX}; i++ ));
-	do
-		echo "[ ---------------- ${array[$i-1]} ---------------- ]"
-   		msg "Installing oracle java8 ....."
-   		run=$(install_jdk ${array[$i-1]})
+	for (( i=2; i<${MASTER_INDEX}; i++ )); do
+		echo "Processing ${array[$i-1]} "
 
+		ProgressBar 10 30
+   		msg "Installing oracle java8 ....."
+   		install_jdk ${array[$i-1]} &>/dev/null
+
+   		ProgressBar 20 30
    		msg "Installing apache mesos ....."
-   		run=$(install_mesos "slave" ${array[$i-1]})
+   		install_mesos "slave" ${array[$i-1]} &>/dev/null
    		
+   		ProgressBar 25 30
    		msg "Configure to mesos-slave env ....."
-   		run=$(slave-config ${MASTER_IPS} ${array[$i-1]})
+   		slave-config ${MASTER_IPS} ${array[$i-1]} &>/dev/null
+
+   		ProgressBar 30 30
+   		msg "Finish install ....."
 	done
 }

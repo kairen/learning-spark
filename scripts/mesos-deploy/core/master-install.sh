@@ -7,18 +7,22 @@
 function master-install {
 	array=("$@")
 	arraylength=${#array[@]}
-	for (( i=2; i<${arraylength}+1; i++ ));
-	do
-   		echo "[ ---------------- ${array[$i-1]} ---------------- ]"
+	for (( i=2; i<${arraylength}+1; i++ )); do
+   		echo "Processing ${array[$i-1]} "
+
+         ProgressBar 10 30
    		msg "Installing oracle java8 ....."
-   		run=$(install_jdk ${array[$i-1]})
+   		install_jdk ${array[$i-1]} &>/dev/null
 
+         ProgressBar 20 30
    		msg "Installing apache mesos ....."
-   		run=$(install_mesos "master" ${array[$i-1]})
+   		install_mesos "master" ${array[$i-1]} &>/dev/null
 
+         ProgressBar 25 30
    		msg "Configure to mesos-master env ....."
-   		run=$(master-config ${array[$i-1]})
+   		master-config ${array[$i-1]} &>/dev/null
 
+          ProgressBar 30 30
    		msg "Finish install ....."
 	done
 }
