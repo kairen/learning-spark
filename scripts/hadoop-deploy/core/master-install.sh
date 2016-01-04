@@ -107,7 +107,7 @@ function master-install {
 
 	if [ $hive == "true" ]; then
 		msg "Using \"hadoop fs -mkdir /tmp\" to create hive dir on HDFS ..." "HIVE INFO"
-		msg "Using \"hadoop fs -mkdir /user/hive/warehouse\" to create hive dir on HDFS ..." "HIVE INFO"
+		msg "Using \"hadoop fs -mkdir -p /user/hive/warehouse\" to create hive dir on HDFS ..." "HIVE INFO"
 		msg "Using \"/opt/hive/bin/hive --service metastore &\" to start metastore service ..." "HIVE INFO"
 	fi
 

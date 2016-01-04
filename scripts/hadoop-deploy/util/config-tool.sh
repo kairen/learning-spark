@@ -130,7 +130,7 @@ function hive-config {
 	cmd $2 'sudo chown $(whoami):$(whoami) /usr/local/hadoop_store/hive-tmp'
 
 	MYSQL_JAR_PATH="/usr/share/java/mysql-connector-java-5.1.28.jar"
-	cmd $2 "sudo cp ${MYSQL_JAR_PATH} ${HBASE_HOME}/lib"
+	cmd $2 "sudo cp ${MYSQL_JAR_PATH} ${HIVE_HOME}/lib"
 	cmd $2 "sudo cp ${HIVE_HOME}/conf/hive-env.sh.template ${HIVE_HOME}/conf/${HIVE_ENV}"
 	
 	echo "export HADOOP_HEAPSIZE=1024" | cmd $2 "sudo tee -a ${HIVE_HOME}/conf/${HIVE_ENV}"
