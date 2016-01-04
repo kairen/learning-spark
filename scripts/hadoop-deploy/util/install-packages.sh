@@ -43,8 +43,8 @@ function install_hbase {
 function install_hive {
 	MYSQL_PASSWD="mysql-server mysql-server/root_password password passwd"
 	MYSQL_AGAIN_PASSWD="mysql-server mysql-server/root_password_again password passwd"
-	echo ${MYSQL_PASSWD} | cmd $2 "sudo debconf-set-selections"
-	echo ${MYSQL_AGAIN_PASSWD} | cmd $2 "sudo debconf-set-selections"
+	echo ${MYSQL_PASSWD} | cmd $1 "sudo debconf-set-selections"
+	echo ${MYSQL_AGAIN_PASSWD} | cmd $1 "sudo debconf-set-selections"
 
 	cmd $1 "sudo apt-get install -y libmysql-java mysql-server-5.5"
 	URL="http://files.imaclouds.com/packages/hadoop/hive-1.2.1-bin.tar.gz"
