@@ -11,6 +11,7 @@ source util/msg.sh
 source util/config-tool.sh
 source conf/hadoop-config.sh
 source conf/hbase-config.sh
+source conf/hive-config.sh
 
 source core/master-install.sh
 source core/slave-install.sh

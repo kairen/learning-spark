@@ -16,14 +16,13 @@ Options:
 "
 
 SLAVE_INFO="
-hadoop-deploy slave-install [options] {host1, ...}     # Install some slaves node
+hadoop-deploy slave-install [options] {host1, ...}    # Install some slaves node
 
 Options:
-        --hbase {false}                                # Install hbase to node, default is false
-        --hive {false}                                # Install hive to node, default is false
-        --master {master}                              # Add some master to slaves 
-        --version {2.6.0}                              # Install version, default is 2.6.0
-        --ignore {false}                               # Ignore install step, default is false
+        --hbase {false}                               # Install hbase to node, default is false
+        --master {master}                             # Add some master to slaves 
+        --version {2.6.0}                             # Install version, default is 2.6.0
+        --ignore {false}                              # Ignore install step, default is false
 
 "
 

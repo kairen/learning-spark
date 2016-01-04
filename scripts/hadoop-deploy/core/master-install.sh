@@ -8,13 +8,14 @@ function master-install {
 	array=("$@")
 	arraylength=${#array[@]}
 
-	CHECK_OPTIONS=("--spark" "--hbase" "--version" "--ignore")
+	CHECK_OPTIONS=("--spark" "--hbase" "--hive" "--version" "--ignore")
 	check_options $@
 	
 	SPARK_INDEX=$(index "--spark" ${array[@]})
 	VERSION_INDEX=$(index "--version" ${array[@]})
 	IGNORE_INDEX=$(index "--ignore" ${array[@]})
 	HBASE_INDEX=$(index "--hbase" ${array[@]})
+	HIVE_INDEX=$(index "--hive" ${array[@]})
 
 	check_bool ${SPARK_INDEX} "${array[SPARK_INDEX]}" "--spark"
 	SPARK=${RETURE_VALUE}
@@ -28,17 +29,22 @@ function master-install {
 	check_bool ${HBASE_INDEX} "${array[HBASE_INDEX]}" "--hbase"
 	HBASE=${RETURE_VALUE}
 
+	check_bool ${HIVE_INDEX} "${array[HIVE_INDEX]}" "--hive"
+	HIVE=${RETURE_VALUE}
+
 	local spark=${SPARK:-"true"}
 	local version=${VERSION:-"2.6.0"}
 	local ignore=${IGNORE:-"false"}
 	local hbase=${HBASE:-"false"}
+	local hive=${HIVE:-"false"}
 	
 	msg "Spark： $spark" "Configuraion"
 	msg "HBase： $hbase" "Configuraion"
+	msg "HIVE： $hive" "Configuraion"
 	msg "Ignore install： $ignore" "Configuraion"
 	msg "Version： $version" "Configuraion"
 
-	begin=$(max $MASTER_INDEX $VERSION_INDEX $IGNORE_INDEX $HBASE_INDEX)
+	begin=$(max $MASTER_INDEX $VERSION_INDEX $IGNORE_INDEX $HBASE_INDEX $HIVE_INDEX)
 
 	if [ -z "${array[$begin+1]}" ]; then
 		msg "No host ..." "ERROR"
@@ -52,15 +58,15 @@ function master-install {
 		msg "Installing oracle java8 ....."
    		install_jdk ${array[$i-1]} &>/dev/null
    		
-   		ProgressBar 10 25
+   		ProgressBar 8 25
    		msg "Installing other packages .."
    		install_other ${array[$i-1]} &>/dev/null
    		
-   		ProgressBar 15 25 
+   		ProgressBar 13 25 
    		msg "Automatically generated ssh keys .."
    		ssh-config ${array[$i-1]} &>/dev/null
 
-   		ProgressBar 18 25 
+   		ProgressBar 16 25 
    		msg "Installing Apache Hadoop .."
    		install_hadoop ${version} ${array[$i-1]} &>/dev/null
    		hadoop-env-config ${version} ${array[$i-1]} ${array[$i-1]} &>/dev/null
@@ -72,8 +78,16 @@ function master-install {
    			hbase-config "true" ${array[$i-1]} ${array[$i-1]} &>/dev/null
    		fi
 
+   		if [ $hive == "true" ]; then
+   			ProgressBar 22 25 
+   			msg "Installing Apache Hive .."
+   			install_hive ${array[$i-1]} &>/dev/null
+   			hive-mysql-config ${array[$i-1]} &>/dev/null
+   			hive-config ${version} ${array[$i-1]}  &>/dev/null
+   		fi
+
    		if [ $spark == "true" ]; then
-   			ProgressBar 23 25 
+   			ProgressBar 24 25 
    			msg "Installing Apache Spark .."
    			install_spark "1.5.2" ${array[$i-1]} &>/dev/null
    			spark-env-config ${version} ${array[$i-1]} &>/dev/null
@@ -83,11 +97,18 @@ function master-install {
    		msg "Install Finish .."
 	done
 	
-	msg "Using \"/opt/hadoop-${version}/sbin/start-all.sh\" to start service ..."
+	msg "Using \"/opt/hadoop-${version}/sbin/start-dfs.sh\" to start HDFS ..."
+	msg "Using \"/opt/hadoop-${version}/sbin/start-yarn.sh\" to start YARN ..."
 	
 	if [ $hbase == "true" ]; then
-		hbase-slave-config ${master} ${SLAVES} &>/dev/null
-		msg "Using \"hadoop fs -mkdir /hbase\" to create hbase dir on HDFS ..."
-		msg "Using \"/opt/hbase-1.1.2/bin/start-hbase.sh\" to start service ..."
+		msg "Using \"hadoop fs -mkdir /hbase\" to create hbase dir on HDFS ..." "HBASE INFO"
+		msg "Using \"/opt/hbase-1.1.2/bin/start-hbase.sh\" to start service ..." "HBASE INFO"
 	fi
+
+	if [ $hive == "true" ]; then
+		msg "Using \"hadoop fs -mkdir /tmp\" to create hive dir on HDFS ..." "HIVE INFO"
+		msg "Using \"hadoop fs -mkdir /user/hive/warehouse\" to create hive dir on HDFS ..." "HIVE INFO"
+		msg "Using \"/opt/hive/bin/hive --service metastore &\" to start metastore service ..." "HIVE INFO"
+	fi
+
 }

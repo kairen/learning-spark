@@ -33,19 +33,15 @@ function hadoop-env-config {
 	echo ${EXPOST} | cmd $2 "sudo tee -a ${ENV_PATH}"
 
 	CORE_PATH="${HADOOP_HOME}/etc/hadoop/${CORE_SITE}"
-	cmd $2  "sudo rm -rf ${CORE_PATH}"
 	CONFIG_CORE_SITE $3 | cmd $2 "sudo tee ${CORE_PATH}"
 
 	HDFS_PATH="${HADOOP_HOME}/etc/hadoop/${HDFS_SITE}"
-	cmd $2  "sudo rm -rf ${HDFS_PATH}"
 	CONFIG_HDFS_SITE $3 | cmd $2 "sudo tee ${HDFS_PATH}"
 
 	MAPRED_PATH="${HADOOP_HOME}/etc/hadoop/${MAPRED_SITE}"
-	cmd $2  "sudo rm -rf ${MAPRED_PATH}"
 	CONFIG_MAPRED_SITE $3 | cmd $2 "sudo tee ${MAPRED_PATH}"
 
 	YARN_PATH="${HADOOP_HOME}/etc/hadoop/${YARN_SITE}"
-	cmd $2  "sudo rm -rf ${YARN_PATH}"
 	CONFIG_YARN_SITE $3 | cmd $2 "sudo tee ${YARN_PATH}"
 
 	cmd $2 "${HADOOP_HOME}/bin/hadoop namenode -format"
@@ -114,14 +110,38 @@ function hbase-slave-config {
 	echo -e $2 | cmd $1 "sudo tee ${SLAVES_PATH}"
 }
 
+function hive-mysql-config {
+	cmd $1 "mysql --user=root --password=passwd -e \"create database hive;\""
+	cmd $1 "mysql --user=root --password=passwd -e \"grant all on *.* to'hive'@'localhost' identified by 'hive';\""
+	cmd $1 "mysql --user=root --password=passwd -e \"grant all on *.* to'hive'@'%' identified by 'hive';\""
+	cmd $1 "mysql --user=root --password=passwd -e \"flush privileges;\""
+	cmd $1 "sudo sed -i -e 's/bind-address/#bind-address/g' /etc/mysql/my.cnf"
+	cmd $1 "sudo service mysql restart"
+}
+
 function hive-config {
-	cmd $2 "sudo mv /opt/apache-hive-1.2.1-bin /opt/hive"
+	HIVE_HOME="/opt/hive"
+	HADOOP_HOME="/opt/hadoop-${1}"
+	HIVE_SITE="hive-site.xml"
+	HIVE_ENV="hive-env.sh"
 
-	HBASE_HOME="/opt/hive"
+	cmd $2 "sudo mv /opt/apache-hive-1.2.1-bin ${HIVE_HOME}"
+	cmd $2 "sudo mkdir -p /usr/local/hadoop_store/hive-tmp"
+	cmd $2 'sudo chown $(whoami):$(whoami) /usr/local/hadoop_store/hive-tmp'
+
 	MYSQL_JAR_PATH="/usr/share/java/mysql-connector-java-5.1.28.jar"
-
 	cmd $2 "sudo cp ${MYSQL_JAR_PATH} ${HBASE_HOME}/lib"
+	cmd $2 "sudo cp ${HIVE_HOME}/conf/hive-env.sh.template ${HIVE_HOME}/conf/${HIVE_ENV}"
+	
+	echo "export HADOOP_HEAPSIZE=1024" | cmd $2 "sudo tee -a ${HIVE_HOME}/conf/${HIVE_ENV}"
+	echo "HADOOP_HOME=${HADOOP_HOME}" | cmd $2 "sudo tee -a ${HIVE_HOME}/conf/${HIVE_ENV}"
+	echo "export HIVE_CONF_DIR=${HIVE_HOME}/conf" | cmd $2 "sudo tee -a ${HIVE_HOME}/conf/${HIVE_ENV}"
+	echo "export HIVE_AUX_JARS_PATH=${HIVE_HOME}/lib" | cmd $2 "sudo tee -a ${HIVE_HOME}/conf/${HIVE_ENV}"
+
+	HIVE_SITE_PATH="${HIVE_HOME}/conf/${HIVE_SITE}"
+	CONFIG_HIVE_SITE $2 | cmd $2 "sudo tee ${HIVE_SITE_PATH}"
 
 	echo "export HIVE_HOME=$HIVE_HOME" | cmd $2 "sudo tee -a ~/.bashrc"
 	echo "export PATH=\$PATH:\$HIVE_HOME/bin" | cmd $2 "sudo tee -a ~/.bashrc"
+	echo "export HADOOP_USER_CLASSPATH_FIRST=true" | cmd $2 "sudo tee -a ~/.bashrc"
 }

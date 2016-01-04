@@ -29,6 +29,11 @@ function slave-install {
 	check_bool ${HBASE_INDEX} "${array[HBASE_INDEX]}" "--hbase"
 	HBASE=${RETURE_VALUE}
 
+	if [ -z ${MASTER} ]; then
+		msg "No master host ..." "ERROR"
+		exit 1
+	fi
+
 	local master=${MASTER}
 	local version=${VERSION:-"2.6.0"}
 	local ignore=${IGNORE:-"false"}
@@ -81,12 +86,13 @@ function slave-install {
 	done
 
 	hadoop-slave-config ${version} ${master} ${SLAVES} &>/dev/null
-	msg "Using \"/opt/hadoop-${version}/sbin/start-all.sh\" to start service ..."
+	msg "Using \"/opt/hadoop-${version}/sbin/start-dfs.sh\" to start HDFS ..."
+	msg "Using \"/opt/hadoop-${version}/sbin/start-yarn.sh\" to start YARN ..."
 
 	if [ $hbase == "true" ]; then
 		hbase-slave-config ${master} ${SLAVES} &>/dev/null
-		msg "Using \"hadoop fs -mkdir /hbase\" to create hbase dir on HDFS ..."
-		msg "Using \"/opt/hbase-1.1.2/bin/start-hbase.sh\" to start service ..."
+		msg "Using \"hadoop fs -mkdir /hbase\" to create hbase dir on HDFS ..." "HBASE INFO"
+		msg "Using \"/opt/hbase-1.1.2/bin/start-hbase.sh\" to start service ..." "HBASE INFO"
 	fi
 
 }
