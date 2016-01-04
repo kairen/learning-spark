@@ -46,7 +46,7 @@ function install_hive {
 	echo ${MYSQL_PASSWD} | cmd $2 "sudo debconf-set-selections"
 	echo ${MYSQL_AGAIN_PASSWD} | cmd $2 "sudo debconf-set-selections"
 
-	cmd $2 "sudo apt-get install -y libmysql-java mysql-server"
+	cmd $1 "sudo apt-get install -y libmysql-java mysql-server"
 	URL="http://files.imaclouds.com/packages/hadoop/hive-1.2.1-bin.tar.gz"
-	cmd $2 "curl -s $URL | sudo tar -xz -C /opt/"
+	cmd $1 "curl -s $URL | sudo tar -xz -C /opt/"
 }
