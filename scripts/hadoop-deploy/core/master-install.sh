@@ -33,7 +33,7 @@ function master-install {
 	check_bool ${HIVE_INDEX} "${array[HIVE_INDEX]}" "--hive"
 	HIVE=${RETURE_VALUE}
 
-	check_pattern ${SPARK_VERSION_INDEX} "[0-9].[0-9].[0-9]" "${array[SPARK_VERSION_INDEX]}" "--version"
+	check_pattern ${SPARK_VERSION_INDEX} "[0-9].[0-9].[0-9]" "${array[SPARK_VERSION_INDEX]}" "--spark-version"
 	SPARK_VERSION=${RETURE_VALUE}
 
 
