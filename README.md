@@ -18,6 +18,7 @@
 
 ### 參與貢獻
 任何團隊成員都可以對該 git 做貢獻，未來也會請大家針對不一樣的作業進行提交，一個基本的貢獻流程如下所示：
+
 1. 在 ```Github``` 上 ```fork``` 到自己的 Repository，例如：```<User>/Spark-tutorial.git```，然後 ```clone```到 local 端，並設定 Git 使用者資訊。
 
  ```sh
