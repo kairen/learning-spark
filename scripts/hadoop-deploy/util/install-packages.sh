@@ -27,7 +27,7 @@ function install_hadoop {
 
 function install_spark {
 	local spark_version=${1:-"1.5.2"}
-	URL="http://files.imaclouds.com/packages/hadoop-spark/spark-${spark_version}-bin-hadoop2.6.tgz"
+	URL="http://files.imaclouds.com/packages/spark/spark-${spark_version}-bin-hadoop2.6.tgz"
 	cmd $2 "curl -s $URL | sudo tar -xz -C /opt/"
 	cmd $2 "sudo mv /opt/spark-${spark_version}-bin-hadoop2.6 /opt/spark"
 }

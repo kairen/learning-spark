@@ -8,7 +8,7 @@ function master-install {
 	array=("$@")
 	arraylength=${#array[@]}
 
-	CHECK_OPTIONS=("--spark" "--hbase" "--hive" "--version" "--ignore")
+	CHECK_OPTIONS=("--spark" "--hbase" "--hive" "--version" "--ignore" "--spark-version")
 	check_options $@
 	
 	SPARK_INDEX=$(index "--spark" ${array[@]})
@@ -16,6 +16,7 @@ function master-install {
 	IGNORE_INDEX=$(index "--ignore" ${array[@]})
 	HBASE_INDEX=$(index "--hbase" ${array[@]})
 	HIVE_INDEX=$(index "--hive" ${array[@]})
+	SPARK_VERSION_INDEX=$(index "--spark-version" ${array[@]})
 
 	check_bool ${SPARK_INDEX} "${array[SPARK_INDEX]}" "--spark"
 	SPARK=${RETURE_VALUE}
@@ -32,19 +33,25 @@ function master-install {
 	check_bool ${HIVE_INDEX} "${array[HIVE_INDEX]}" "--hive"
 	HIVE=${RETURE_VALUE}
 
+	check_pattern ${SPARK_VERSION_INDEX} "[0-9].[0-9].[0-9]" "${array[SPARK_VERSION_INDEX]}" "--version"
+	SPARK_VERSION=${RETURE_VALUE}
+
+
 	local spark=${SPARK:-"true"}
 	local version=${VERSION:-"2.6.0"}
 	local ignore=${IGNORE:-"false"}
 	local hbase=${HBASE:-"false"}
 	local hive=${HIVE:-"false"}
+	local spark_version=${SPARK_VERSION:-"1.5.2"}
 	
 	msg "Spark： $spark" "Configuraion"
+	msg "Spark Version： $spark_version" "Configuraion"
 	msg "HBase： $hbase" "Configuraion"
 	msg "HIVE： $hive" "Configuraion"
 	msg "Ignore install： $ignore" "Configuraion"
-	msg "Version： $version" "Configuraion"
+	msg "Hadoop Version： $version" "Configuraion"
 
-	begin=$(max $MASTER_INDEX $VERSION_INDEX $IGNORE_INDEX $HBASE_INDEX $HIVE_INDEX)
+	begin=$(max $MASTER_INDEX $VERSION_INDEX $IGNORE_INDEX $HBASE_INDEX $HIVE_INDEX $SPARK_VERSION_INDEX)
 
 	if [ -z "${array[$begin+1]}" ]; then
 		msg "No host ..." "ERROR"
@@ -89,7 +96,7 @@ function master-install {
    		if [ $spark == "true" ]; then
    			ProgressBar 24 25 
    			msg "Installing Apache Spark .."
-   			install_spark "1.5.2" ${array[$i-1]} &>/dev/null
+   			install_spark ${spark_version} ${array[$i-1]} &>/dev/null
    			spark-env-config ${version} ${array[$i-1]} &>/dev/null
    		fi
 

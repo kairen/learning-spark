@@ -47,7 +47,7 @@ $ ssh-copy-id ubuntu@hadoop-slave2
 ## 安裝 Spark
 首先下載 Spark，並修改權限：
 ```sh
-$ curl -s http://files.imaclouds.com/packages/hadoop-spark/spark-1.5.2-bin-hadoop2.6.tgz | sudo tar -xz -C /opt/
+$ curl -s http://files.imaclouds.com/packages/spark/spark-1.5.2-bin-hadoop2.6.tgz | sudo tar -xz -C /opt/
 $ sudo mv /opt/spark-1.5.2-bin-hadoop2.6 /opt/spark
 $ sudo chown $USER:$USER -R /opt/spark
 ```

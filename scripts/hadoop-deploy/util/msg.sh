@@ -12,6 +12,7 @@ Options:
         --hbase {false}                               # Install hbase to node, default is false
         --hive {false}                                # Install hive to node, default is false
         --version {2.6.0}                             # Install version, default is 2.6.0
+        --spark-version                               # Install spark version, default is 1.5.2
         --ignore {false}                              # Ignore install step, default is false
 "
 
