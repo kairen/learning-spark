@@ -1,47 +1,119 @@
-# Spark tutorial for imac
-本項目將儲存所有於分享會以及課程上，所接觸的系統建置、Spark API撰寫、HDFS 操作...等教學與整理，主要授課人員為 NUTC imac 內部團隊自我訓練。
+#SparkCassandra
 
-### 主要包含項目
-1. Spark 概念整理
-2. Spark 環境部署模式
-3. Spark API 簡單操作
-4. Spark SQL API(Hive on Spark)
-5. Spark Streaming API(DStream)
-6. Message Queue Broker(such as MQTT, Kafka...etc)
-7. Spark MLlib
-8. ELK logs 分析
-9. Spark 串接 s3 與 swift
-10. Spark NoSQL 串接
-11. Spark Dataframe
+這是一個透過Spark來與Cassandra進行存取溝通的一個範例
 
-> 以上內容我們會逐一整理，並寫成文件來分享給大家。
 
-### 參與貢獻
-任何團隊成員都可以對該 git 做貢獻，未來也會請大家針對不一樣的作業進行提交，一個基本的貢獻流程如下所示：
 
-1. 在 ```Github``` 上 ```fork``` 到自己的 Repository，例如：```<User>/Spark-tutorial.git```，然後 ```clone```到 local 端，並設定 Git 使用者資訊。
 
- ```sh
-git clone https://github.com/imac-cloud/Spark-tutorial.git
-cd spark-tutorial
-git config user.name "User"
-git config user.email user@email.com
+## Spark
+
+
+設定 Cassandra ip 
+
+	   
 ```
-2. 修改程式碼或頁面後，透過 ```commit``` 來提交到自己的 Repository：
+SparkConf conf = new SparkConf();'
+conf.set("spark.cassandra.connection.host", args[0]);
+conf.setAppName("TestCassandra");
 
- ```sh
-git commit -am "Fix issue #1: change helo to hello"
-git push
 ```
-> 若新增採用一般文字訊息，如```Add Spark MLlib example ...```。
+	
+定義資料格式 Person
+```
+List<Person> people = Arrays.asList(Person.newInstance(1, "John"), Person.newInstance(2, "Anna"), Person.newInstance(3, "Andrew"));
+```
 
-3. 在 GitHub 上提交一個 Pull Request。
-4. 持續的針對 Project Repository 進行更新內容：
 
- ```sh
- git remote add upstream  https://github.com/imac-cloud/Spark-tutorial.git
- git fetch upstream
- git checkout master
- git rebase upstream/master
- git push -f origin master
- ```
+
+寫入 Cassandra
+```
+javaFunctions(rdd).writerBuilder("test", "people",mapToRow(Person.class)).saveToCassandra();
+```
+
+```
+ id | name
+----+--------
+  1 |   John
+  2 |   Anna
+  3 | Andrew
+```
+
+讀取 Cassandra
+```
+JavaRDD<String> cassandraRowsRDD = javaFunctions(sc).cassandraTable("test", "people").map(new Function<CassandraRow, String>() {
+			public String call(CassandraRow cassandraRow) throws Exception {
+				return cassandraRow.toString();
+			}
+		});
+```
+```
+Data as CassandraRows:
+CassandraRow{id: 1, name: John}
+CassandraRow{id: 2, name: Anna}
+CassandraRow{id: 3, name: Andrew}
+```
+
+搜尋 Cassandra 欄位 name 等於 Anna 的資料
+```
+JavaRDD<String> rdd3 = javaFunctions(sc).cassandraTable("test", "people", mapRowTo(Person.class)).where("name=?", "Anna").map(new Function<Person, String>() {
+			@Override
+			public String call(Person person) throws Exception {
+				return person.toString();
+			}
+		});
+```
+
+
+```
+Data filtered by the where clause (name='Anna'):
+Person{id=2, name=Anna}
+```
+
+搜尋 Cassandra 的 id 欄位
+
+
+```
+JavaRDD<String> rdd4 = javaFunctions(sc).cassandraTable("test", "people").select("id").map(new Function<CassandraRow, String>() {
+			@Override
+			public String call(CassandraRow cassandraRow) throws Exception {
+				return cassandraRow.toString();
+			}
+		});
+```
+
+```
+Data with only 'id' column fetched:
+CassandraRow{id: 1}
+CassandraRow{id: 2}
+CassandraRow{id: 3}
+```
+
+
+
+## Cassandra
+
+* 進入
+
+```
+./bin/cqlsh localhost 
+```
+
+* create keypace
+
+```
+CREATE KEYSPACE test WITH replication = {'class':'SimpleStrategy', 'replication_factor': 1} ;
+```
+
+* create table
+
+```
+CREATE TABLE people ( id int , name text , PRIMARY KEY ((id),name));
+```
+
+* 
+內容
+
+```
+SELECT * FROM people;
+
+```
