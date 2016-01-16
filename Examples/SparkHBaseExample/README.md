@@ -6,10 +6,7 @@
 
 ##HBase
 
-| test                |
-| --   | --  |   --   | 
-|      | cf  |        | 
-| row1 | a   | value1 |
+![](./images/hbase.png)
  
 
 * TABLE_NAME : test
