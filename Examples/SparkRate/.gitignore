@@ -1,0 +1,8 @@
+libs/
+
+libs/*
+.classpath
+.project
+.settings
+bin/
+bin/*
