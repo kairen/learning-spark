@@ -1,21 +1,18 @@
 ## SparkExample Rank20  IMAC - BigData Team - 2015/12/16
 
 ###問題描述
-
 從[商品交易紀錄](http://files.imaclouds.com/dataset/HMC-Contest.log) 當中，列出當月銷售最好商品TOP20。
 
 ###資料前處理
-
 ```
 $ wget http://files.imaclouds.com/dataset/HMC-Contest.log
 $ cat HMC-Contest.log | grep -o "act=order.*;e" | sed "s/;e//" > RankData
 $ hadoop fs -put RankData /input/Rank
 ```
->將資料做前處理後，可以將不必要的資料排除，由原本的1.5G資料降至幾M，提升資料處理的分析效能
+> 資料前處理可以考慮是否要進行，若在 Hadoop MR 中，可以減少迭代次數，但由於 Spark 善於這樣的工作，但會影響程式撰寫方式。
 
 ###執行分析
-
-```
+```sh
 spark-submit --class com.imac.test.Main \
 --master yarn-cluster Rank.jar \
 /input/Rank/RankData \
