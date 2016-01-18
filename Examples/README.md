@@ -1,8 +1,10 @@
 # Spark example and homework
 imac spark 教學範例與作業程式碼。分別包含以下：
 * Spark API Example
-* 找出當月消費前20名商品
+* 找出當月消費前20名商品（EHC-2015）
 * Spark SQL Example
+* Spark HBase Example
+* Spark Cassandra Example
 * Spark Streaming Example
 * Spark MLlib Example
 
@@ -35,7 +37,7 @@ $ docker run -d -p 8088:8088 -p 50070:50070 -h spark-master  \
 ```
 > 詳細參考 [Docker Hub](https://hub.docker.com/r/kairen/yarn-spark/) 的 README.md
 
-### API Example Dataset
+### 上傳檔案到 HDFS
 Spark API Example 採用以下測試資料來完成操作，可以透過 vim 或 nano 新增：
 ```txt
 $ vim test.txt
@@ -52,15 +54,6 @@ f,123,446,789,14,2142,1113,323
 $ hadoop fs -mkdir -p /spark/hw
 $ hadoop fs -put test.txt /spark/hw
 ```
-
-### 消費前20名 Dataset
-找出當月消費前20名商品的範例，請下載[商品交易 Log](http://files.imaclouds.com/dataset/HMC-Contest.log)並透過 ```grep``` 前處理來，完成後上傳至 HDFS：
-```sh
-$ wget http://files.imaclouds.com/dataset/HMC-Contest.log
-$ grep -o "act=order;uid=\w*\>;plist=[0-9,]*\>" HMC-Contest.log > preprocessed.csv
-$ hadoop fs -put preprocessed.csv /spark/hw
-```
-> 資料前處理可以考慮是否要進行，若在 Hadoop MR 中，可以減少迭代次數，但由於 Spark 善於這樣的工作，但會影響程式撰寫方式。
 
 ### 執行方式
 由於本次教學是部署於 YARN 之上的 Spark，若要提交一個分析 Application，可以使用以下指令：
