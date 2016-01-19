@@ -19,13 +19,13 @@ sudo apt-get install -y mongodb-org
 sudo service mongod start
 ```
 
-**Enter MongoDB **
+**Enter MongoDB**
 
 ```
 mongo
 ```
 
-** show database**
+**show database**
 ```
 db
 ```
