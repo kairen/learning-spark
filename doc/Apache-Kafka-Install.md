@@ -25,11 +25,11 @@ Apache Kafka 的一個簡單應用架構可以參考下圖，透過 Spark Stream
 ## 安裝 Apache Kafka
 一個簡單的節點配置如下：
 
-| IP Address  |   Role   |
-|-------------|----------|
-|172.17.0.2   |  kafka-1 |
-|172.17.0.3   |  kafka-2 |
-|172.17.0.4   |  kafka-3 |
+| IP Address  |   Role   | zookeeper id | broker.id |
+|-------------|----------|--------------|-----------|
+|172.17.0.2   |  kafka-1 |       1      |     0     |
+|172.17.0.3   |  kafka-2 |       2      |     1     |
+|172.17.0.4   |  kafka-3 |       3      |     2     |
 
 首先要在每台節點安裝 Java，這邊採用 Oracle 的 Java 來進行安裝：
 ```sh
@@ -129,7 +129,7 @@ ggeeder
 接著就要讀取訊息，透過 Subscribe 來訂閱收取資料：
 ```sh
 $ /opt/kafka/bin/kafka-console-consumer.sh \
---zookeeper localhost:2181 \
+--zookeeper 172.17.0.2:2181,172.17.0.3:2181 \
 --topic test \
 --from-beginning
 ```
@@ -151,5 +151,3 @@ $ /opt/kafka/bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic t
 ```sh
 $ /opt/kafka/bin/kafka-console-consumer.sh --zookeeper localhost:2181 --from-beginning --topic test
 ```
-
-
