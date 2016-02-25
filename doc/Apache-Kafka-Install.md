@@ -15,7 +15,7 @@ Kafka 從架構上來看，Kafka 會擁有以下幾個角色：
 * **Topic**：拿來做訊息的分類。
 * **Zookeeper**：Zookeeper 不算是 Kafka 一員，但 Kafka 依賴 Zookeeper 來做到 Sync。
 
-<center> ![](images/producer_consumer.png) 
+<center> ![](images/producer_consumer.jpg) 
 
 Apache Kafka 的一個簡單應用架構可以參考下圖，透過 Spark Streaming 來進行串接做快速的串流資料收集，並利用 Spark 框架進行分析後取得結果存於 Cassandra 資料庫叢集，最後在由應用程式或前端網頁來顯示處理過的資料：
 
