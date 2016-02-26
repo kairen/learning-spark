@@ -1,5 +1,5 @@
 # Apache Cassandra 
-Cassandra 是最初由 Facebook 開發，之後貢獻給 Apache 基金會維護的分散式 NoSQL 資料庫系統，一般被認為 Amazon Dyname 與 Google BigTable 的結合體，主要是分散性像 Dynamo，然而 資料模型卻如 BigTable。目前有多家公司採用，運行著上千台節點來提供超過 200 TB 的資料。
+Cassandra 是最初由 Facebook 開發，之後貢獻給 Apache 基金會維護的分散式 NoSQL 資料庫系統，一般被認為 Amazon Dyname 與 Google BigTable 的結合體，主要是分散性像 Dynamo，然而資料模型卻如 BigTable。目前有多家公司採用，可運行上千台節點來提供超過 200 TB 的資料。
 
 Cassandra 擁有幾個特點，也因為這些特點讓許多人選擇使用該資料庫，以下幾個項目簡單列出其特點：
 * 完全去中心化，且不是主從架構的備份
@@ -43,8 +43,6 @@ $ sudo apt-get -y install oracle-java7-installer
 $ echo "deb http://www.apache.org/dist/cassandra/debian 22x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list  
 ```
 > 這邊安裝```2.2.x```版本，若要其他版本則修改```22x```，如改為```21x```。
-
-為了避免在軟件包更新軟件包簽名警告，我們需要添加來自Apache軟件基金會與包庫相關聯的三個公共密鑰。
 
 為了避免軟體套件更新軟體時有簽證警告，需加入 Apache 基金會與套件資源庫相關的三個公有金鑰：
 ```sh
