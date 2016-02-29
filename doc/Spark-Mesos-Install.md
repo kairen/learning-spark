@@ -1,7 +1,27 @@
 # Spark Mesos 
-本教學為安裝 Spark Mesos 的叢集版本，將 Spark 應用程式執行於 Mesos 分散式機制與各台機器連結上，來讓應用程式執行於不同的工作節點上。
+Mesos 叢集是由多個主節點與工作節點組合而成，它實作了兩層的排程（Scheduler）來提供粗/細粒度的排程。在 Mesos 中主節點（Master）主要負責資料的分配與排程，然而從節點（Slave）則是主要執行任務負載的角色。Mesos 也提供了高可靠的部署模式，可利用多個主節點的 ZooKeeper 來做服務發現。
+
+![](images/mesos.png)
+
+
+在 Mesos 上所執行的應用程式都被稱為```框架（Framework）```，該框架會被 Mesos 以 API 方式處理資源的提供，並將任務提交給 Mesos。其任務執行流程有以下幾個步驟構成：
+
+* Slave 提供可用資源給 Master
+* Master 向 Framework 的資源供應，並說明 Slave 資源
+* Framework Scheduler 回應任務以及每個任務的資源需求
+* Master 將任務發送到適當的 Slave 執行器（Executor）
+
+![](images/mesos-framework-example.jpg)
 
 ## 事前準備
+以下為節點配置：
+
+| IP Address  |   HostName   | 
+|-------------|--------------|
+|192.168.1.10 | mesos-master |
+|192.168.1.11 | mesos-slave-1|
+|192.168.1.12 | mesos-slave-2|
+
 首先我們要在各節點先安裝 ssh-server 與 Java JDK，並配置需要的相關環境：
 ```sh
 $ sudo apt-get install openssh-server
@@ -60,7 +80,7 @@ $ sudo apt-get -y install mesos
 ```
 > ```P.S```： Master 需要再安裝 marathon
 
-> Mesos 套件將自動的抓取 ZooKeeper 套件
+> Mesos 套件將自動的安裝 ZooKeeper 套件
 
 ### Master 節點配置
 設定 Zookeeper ID：
@@ -72,6 +92,8 @@ echo 1 | sudo tee /etc/zookeeper/conf/myid
 HOST_IP=$(ip route get 8.8.8.8 | awk '{print $NF; exit}')
 echo server.1=$HOST_IP:2888:3888 | sudo tee -a /etc/zookeeper/conf/zoo.cfg
 ```
+> 若要部署 HA 需要加入多個 Master 節點的 Zookeeper。
+
 啟動 Zookeeper 服務：
 ```sh
 sudo service zookeeper restart
@@ -163,7 +185,7 @@ sudo sh -c "echo manual > /etc/init/mesos-master.override"
 sudo service mesos-slave restart
 ```
 
-### Verifying Installation
+### 驗證安裝結果
 當安裝完成，我們要驗證系統是否正常運行，可以透過以下指令運行：
 ```sh
 MASTER=$(mesos-resolve `cat /etc/mesos/zk`)
@@ -197,7 +219,7 @@ export SPARK_LOCAL_HOSTNAME=$(ifconfig eth0 | awk '/inet addr/{print substr($2,6
 ```
 > 若是多個 Master 採用以下方式```mesos://zk://192.168.100.7:2181,192.168.100.8:2181,192.168.100.9:2181/mesos```。
 
-接著下載一個新的'''spark-1.5.2-bin-hadoop2.6.tgz```，並解壓縮：
+接著下載一個新的```spark-1.5.2-bin-hadoop2.6.tgz```，並解壓縮：
 ```sh
 $ cd ~/
 $ wget http://files.imaclouds.com/packages/spark/spark-1.5.2-bin-hadoop2.6.tgz
