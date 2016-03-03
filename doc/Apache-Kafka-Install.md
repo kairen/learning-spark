@@ -82,8 +82,11 @@ host.name=172.17.0.2
 
 zookeeper.connect=172.17.0.2:2181,172.17.0.3:2181,172.17.0.4:2181
 ```
-> ```P.S``` 這邊的```broker.id```需跟著節點數變動，從 0  開始計數。
-
+> ```P.S``` 這邊的```broker.id```需跟著節點數變動，從 0  開始計數。若使用```OpenStack```或者```Docker```這些虛擬化的話，需在設定檔加入：
+```sh
+advertised.host.name=<Advertised IP>
+advertised.port=9092
+```
 
 編輯完以後就分別啟動這三台 Broker：
 ```sh
