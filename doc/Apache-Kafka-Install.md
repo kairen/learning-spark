@@ -1,4 +1,4 @@
-# Apache Kafka 
+# Apache Kafka
 Apache Kafka 是一個分散式的訊息佇列框架，是由 LinkedIn 公司使用 Scala 語言開發的系統，被廣泛用來處理高吞吐量與容易水平擴展，目前許多巨量資料運算框架以都有整合 Kafka，諸如：Spark、Cloudera、Apache Storm等，
 
 Kafka 是基於```Publish/Subscribe```的訊息系統，主要設計由以下特點：
@@ -15,7 +15,7 @@ Kafka 從架構上來看，Kafka 會擁有以下幾個角色：
 * **Topic**：拿來做訊息的分類。
 * **Zookeeper**：Zookeeper 不算是 Kafka 一員，但 Kafka 依賴 Zookeeper 來做到 Sync。
 
-<center> ![](images/producer_consumer.jpg) 
+<center> ![](images/producer_consumer.jpg)
 
 Apache Kafka 的一個簡單應用架構可以參考下圖，透過 Spark Streaming 來進行串接做快速的串流資料收集，並利用 Spark 框架進行分析後取得結果存於 Cassandra 資料庫叢集，最後在由應用程式或前端網頁來顯示處理過的資料：
 
@@ -33,7 +33,7 @@ Apache Kafka 的一個簡單應用架構可以參考下圖，透過 Spark Stream
 
 首先要在每台節點安裝 Java，這邊採用 Oracle 的 Java 來進行安裝：
 ```sh
-$ sudo apt-get install -y software-properties-common 
+$ sudo apt-get install -y software-properties-common
 $ sudo add-apt-repository -y ppa:webupd8team/java
 $ sudo apt-get update
 $ echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
@@ -51,7 +51,7 @@ $ sudo apt-get install -y zookeeperd
 $ sudo service zookeeper restart
 ```
 
-> 若想部署多節點 Zookeeper，請修改每台節點的```/etc/zookeeper/conf/zoo.cfg```檔案，加入以下內容：(Option) 
+> 若想部署多節點 Zookeeper，請修改每台節點的```/etc/zookeeper/conf/zoo.cfg```檔案，加入以下內容：(Option)
 ```sh
 server.1=172.17.0.2:2888:3888
 server.2=172.17.0.3:2888:3888

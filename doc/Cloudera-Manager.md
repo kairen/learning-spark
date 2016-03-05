@@ -92,5 +92,3 @@ done
 # 參考
 * [CDH Ubuntu](http://www.bogotobogo.com/Hadoop/BigData_hadoop_CDH5_Install.php)
 * [CDH 官方文件](http://www.cloudera.com/content/cloudera/en/documentation/core/latest/topics/cdh_ig_cdh5_install.html)
-
-

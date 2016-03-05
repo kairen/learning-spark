@@ -1,5 +1,5 @@
 # HBase
-
+HBase是專門用於Hadoop檔案系統上的資料庫系統，採取Column-Oriented 資料庫設計，不同於傳統的關聯式資料庫，例如沒有資料表、Schema資料架構等功能，而是採用Key-Value形式的資料架構，每筆資料都有一個Key值對應到一個Value值，再透過多維度的對應關係來建立類似表格效果的資料架構。如此就能採取分散式儲存方式，可以擴充到數千臺伺服器，以應付PB等級的資料處理。
 
 ### What is HBase?
 * 以 Hadoop 的 HDFS 為基礎， 提供類 Bigtable 功能。
@@ -10,23 +10,14 @@
 * 不提供 join。
 * 不提供 SQL語法。
 
-### 簡介
-
-HBase是專門用於Hadoop檔案系統上的資料庫系統，採取Column-Oriented 資料庫設計，不同於傳統的關聯式資料庫，例如沒有資料表、Schema資料架構等功能，而是採用Key-Value形式的資料架構，每筆資料都有一個Key值對應到一個Value值，再透過多維度的對應關係來建立類似表格效果的資料架構。如此就能採取分散式儲存方式，可以擴充到數千臺伺服器，以應付PB等級的資料處理。
-
-
 ![](images/hbase.jpg)
 
 ### HBase Shell
-
-
-* 
-開啟 HBase Shell
+* 開啟 HBase Shell
 
 ![](images/hbase shell.jpg)
 
 * 建立 table
-
 
 |     |cf|
 | --  | -- | --    |
@@ -48,7 +39,7 @@ create 'test', 'cf'
 ![](images/habase_shell1.jpg)
 
 
-* 
+*
 加入數值
 
 
@@ -64,7 +55,7 @@ put 'test', 'row3', 'cf:c', 'value3'
 
 
 
-* 
+*
 查看table 內容
 
 ```
@@ -80,12 +71,12 @@ scan 'test'
 get 'test', 'row1'
 
 ```
- 
+
  ![](images/habase_shell4.jpg)
- 
- 
+
+
  * 刪除 table 要先disable在drop
- 
+
 ```
 disable 'test'
 
@@ -96,15 +87,15 @@ drop 'test'
 ![](images/habase_shell5.jpg)
 
  * 關閉 HBase Shell
- 
+
 ```
 exit
 
 ```
- 
+
  參考
- 
+
  http://kurthung1224.pixnet.net/blog/post/195564661-hbase-shell%E6%8C%87%E4%BB%A4-%E7%B0%A1%E5%96%AE%E7%B7%B4%E7%BF%92
- 
- 
+
+
  http://www.ithome.com.tw/node/73980
