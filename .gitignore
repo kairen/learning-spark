@@ -4,3 +4,6 @@ lib/*
 .idea/*
 .DS_Store
 *.iml
+module_sparkexample.xml
+parkexample.properties
+sparkexample.xml
