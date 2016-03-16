@@ -19,13 +19,13 @@ Configuration conf = sc.hadoopConfiguration();
 ###參數設定
 fs.swift.service.PROVIDER.auth.url ， PROVIDER 可任一命名，以下為 ```PROVIDER = test``` 的例子
 >    
->    <fs.swift.service.test.auth.url> : Keystone 驗證 url
+>    fs.swift.service.test.auth.url : Keystone 驗證 url
 >    
->    <fs.swift.service.test.tenant> : Openstack上的 Project name
+>    fs.swift.service.test.tenant : Openstack上的 Project name
 >    
->    <fs.swift.service.test.username> : Openstack登入的帳號
+>    fs.swift.service.test.username : Openstack登入的帳號
 >    
->    <fs.swift.service.test.password> : Openstack登入的密碼
+>    fs.swift.service.test.password : Openstack登入的密碼
 ```
 conf.set("fs.swift.impl", "org.apache.hadoop.fs.swift.snative.SwiftNativeFileSystem");
 conf.set("fs.swift.service.test.auth.url", "http://127.0.0.1:5000/v2.0/tokens");
