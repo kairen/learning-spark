@@ -1,6 +1,4 @@
 # Alluxio
-
-
 分散式虛擬儲存系統 Tachyon 已正式改名 Alluxio，並發佈1.0版本
 
 Aluxion 是一個記憶體虛擬分散式儲存系統，具有高效能、高容錯以及高可靠性的特色，它能夠統一資料的存取去串接機算框架和儲存系統的橋梁，像是同時可相容於Hadoop MapReduce和Apache Spark 以及 Apache Flink的計算框架和Alibaba OSS、Amazon S3、OpenStack Swift,、GlusterFS及 Ceph的儲存系統
@@ -11,9 +9,6 @@ Aluxion 是一個記憶體虛擬分散式儲存系統，具有高效能、高容
 
 
 # Install Java7
-
-
-
 ```
 sudo apt-get purge openjdk*
 sudo apt-get -y autoremove
@@ -21,13 +16,11 @@ sudo add-apt-repository -y ppa:webupd8team/java
 sudo apt-get update
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-sudo apt-get -y install oracle-java7-installer 
+sudo apt-get -y install oracle-java7-installer
 ```
 
 
 # Download Alluxio 1.0.0:
-
-
 ```
 $ wget http://alluxio.org/downloads/files/1.0.0/alluxio-1.0.0-bin.tar.gz
 $ tar xvfz alluxio-1.0.0-bin.tar.gz
@@ -64,7 +57,7 @@ ssh-copy-id localhsot
 
 
 
-格式化 Alluxio FileSystem 並開啟它 
+格式化 Alluxio FileSystem 並開啟它
 
 ```
 $ ./bin/alluxio format
