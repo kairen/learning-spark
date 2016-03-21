@@ -79,7 +79,7 @@ STREAMING_COMMON_OPTS = [
 於```config.py```檔案中的搜尋```STREAMING_TESTS```來查看
 
 測試項目可分為5個項目，如下
-* ```basic``` ，文字計數評估
+* ```basic``` ，測試setup是否正確
 * ```state-by-key```，狀態紀錄的計數評估
 * ```group-by-key-and-window```，groupByKey的評估
 * ```reduce-by-key-and-window```，reduceByKey的評估
