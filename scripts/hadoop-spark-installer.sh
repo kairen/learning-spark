@@ -127,13 +127,13 @@ source ~/.bashrc
 # Install Spark
 if [ "$SPARK_FLAG" = true ]; then
     echo "Install Spark ...."
-    curl -s http://files.imaclouds.com/packages/hadoop-spark/spark-1.5.2-bin-hadoop2.6.tgz | sudo tar -xz -C /opt/
-    sudo mv /opt/spark-1.5.2-bin-hadoop2.6 /opt/spark
+    curl -s http://files.imaclouds.com/packages/hadoop-spark/spark-1.6.1-bin-hadoop2.6.tgz | sudo tar -xz -C /opt/
+    sudo mv /opt/spark-1.6.1-bin-hadoop2.6 /opt/spark
     sudo chown $USER_NAME:$USER_NAME -R /opt/spark
     echo "export HADOOP_CONF_DIR=\$HADOOP_HOME/etc/hadoop" | sudo tee -a /opt/spark/conf/spark-env.sh
     echo "export YARN_CONF_DIR=\$HADOOP_HOME/etc/hadoop" | sudo tee -a /opt/spark/conf/spark-env.sh
     echo "export SPARK_HOME=/opt/spark" | sudo tee -a /opt/spark/conf/spark-env.sh
-    echo "export SPARK_JAR=/opt/spark/lib/spark-assembly-1.5.2-hadoop2.6.0.jar" | sudo tee -a /opt/spark/conf/spark-env.sh
+    echo "export SPARK_JAR=/opt/spark/lib/spark-assembly-1.6.1-hadoop2.6.0.jar" | sudo tee -a /opt/spark/conf/spark-env.sh
     echo "export PATH=\$SPARK_HOME/bin:\$PATH" | sudo tee -a /opt/spark/conf/spark-env.sh
 
     echo "export SPARK_HOME=/opt/spark" | sudo tee -a ~/.bashrc
