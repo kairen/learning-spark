@@ -3,10 +3,7 @@
 
 Aluxion 是一個記憶體虛擬分散式儲存系統，具有高效能、高容錯以及高可靠性的特色，它能夠統一資料的存取去串接機算框架和儲存系統的橋梁，像是同時可相容於Hadoop MapReduce和Apache Spark 以及 Apache Flink的計算框架和Alibaba OSS、Amazon S3、OpenStack Swift,、GlusterFS及 Ceph的儲存系統
 
-
 ![](images/alluxio_architecture.jpg)
-
-
 
 # Install Java7
 ```
