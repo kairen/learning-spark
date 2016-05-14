@@ -1,4 +1,4 @@
-# Cloudera Manager Ubuntu安裝
+# Cloudera Manager Ubuntu安裝 (待修改與更新...)
 ### 部署準備
 首先編輯```/etc/network/interfaces```，設定好每台電腦ip為靜態：
 ```txt
