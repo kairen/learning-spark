@@ -1,4 +1,4 @@
-# Spark Standalone 
+# Spark Standalone
 本教學為安裝 Spark Standalone 的叢集版本，將 Spark 應用程式執行於自己的分散式機制與各台機器連結上，來讓應用程式執行於不同的工作節點上。
 
 ## 事前準備
@@ -23,6 +23,7 @@ $ ssh-copy-id localhost
 ```sh
 $ sudo apt-get purge openjdk*
 $ sudo apt-get -y autoremove
+$ sudo apt-get install -y software-properties-common
 $ sudo add-apt-repository -y ppa:webupd8team/java
 $ sudo apt-get update
 $ echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
@@ -66,7 +67,7 @@ export SPARK_MASTER_WEBUI_PORT="8090"
 > ```SPARK_MASTER_PORT```為主節點（Master）的 Port。
 > ```SPARK_MASTER_WEBUI_PORT```為 WebUI 的 Port，預設為 8080。
 
-接著複製```slaves.template```為```slaves```： 
+接著複製```slaves.template```為```slaves```：
 ```sh
 $ cp slaves.template slaves
 ```
@@ -77,7 +78,7 @@ hadoop-slave1
 hadoop-slave2
 ```
 
-完成後將設定檔複製給其他台機器： 
+完成後將設定檔複製給其他台機器：
 ```sh
 scp -r /opt/spark ubuntu@hadoop-slave1:/opt
 scp -r /opt/spark ubuntu@hadoop-slave2:/opt

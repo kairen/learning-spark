@@ -33,7 +33,8 @@ if (whiptail --title "安裝訊息" --yesno "您是否要安裝Apache Spark？" 
 	"選擇要安裝的 Spark 版本" 15 60 4 \
 	"1.5.2" "Apache Spark 1.5.2 版本" ON \
 	"1.6.0" "Apache Spark 1.6.0 版本" OFF \
-	"1.6.1" "Apache Spark 1.6.1 版本" OFF 3>&1 1>&2 2>&3)
+	"1.6.1" "Apache Spark 1.6.1 版本" OFF \
+	"2.0.0-SNAPSHOT" "Apache Spark 2.0.0-SNAPSHOT 版本" OFF 3>&1 1>&2 2>&3)
 else
     SPARK_FLAG=false
     echo "Skip Install Spark ...."
@@ -133,7 +134,7 @@ if [ "${SPARK_FLAG}" = true ]; then
     curl -s http://files.imaclouds.com/packages/spark/spark-${SPARK_VER}-bin-hadoop2.6.tgz | sudo tar -xz -C /opt/
     sudo mv /opt/spark-${SPARK_VER}-bin-hadoop2.6 /opt/spark
     sudo chown ${USER_NAME}:${USER_NAME} -R /opt/spark
-	
+
     echo "export HADOOP_CONF_DIR=\$HADOOP_HOME/etc/hadoop" | sudo tee -a /opt/spark/conf/spark-env.sh
     echo "export YARN_CONF_DIR=\$HADOOP_HOME/etc/hadoop" | sudo tee -a /opt/spark/conf/spark-env.sh
     echo "export SPARK_HOME=/opt/spark" | sudo tee -a /opt/spark/conf/spark-env.sh

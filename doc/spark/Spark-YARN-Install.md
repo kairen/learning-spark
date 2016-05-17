@@ -23,13 +23,14 @@ $ ssh-copy-id localhost
 ```sh
 $ sudo apt-get purge openjdk*
 $ sudo apt-get -y autoremove
+$ sudo apt-get install -y software-properties-common
 $ sudo add-apt-repository -y ppa:webupd8team/java
 $ sudo apt-get update
 $ echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 $ echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 $ sudo apt-get -y install oracle-java7-installer
 ```
-## 安裝 Hadoop YARN 
+## 安裝 Hadoop YARN
 首先我們須先將 Hadoop YARN 安裝完成，詳細步驟如下所示。
 下載Hadoop 2.6.0 or laster version：
 ```sh
@@ -133,7 +134,7 @@ $ jps
 4025 NameNode
 4383 SecondaryNameNode
 ```
-> 開啟 [Website YARN Dashboard](http://localhost:8088) 與 [HDFS Dashboard](http://localhost:50070) 
+> 開啟 [Website YARN Dashboard](http://localhost:8088) 與 [HDFS Dashboard](http://localhost:50070)
 
 設定環境變數：
 ```sh

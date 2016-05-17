@@ -1,4 +1,4 @@
-# Spark Mesos 
+# Spark Mesos
 Mesos 叢集是由多個主節點與工作節點組合而成，它實作了兩層的排程（Scheduler）來提供粗/細粒度的排程。在 Mesos 中主節點（Master）主要負責資料的分配與排程，然而從節點（Slave）則是主要執行任務負載的角色。Mesos 也提供了高可靠的部署模式，可利用多個主節點的 ZooKeeper 來做服務發現。
 
 ![](images/mesos.png)
@@ -16,7 +16,7 @@ Mesos 叢集是由多個主節點與工作節點組合而成，它實作了兩�
 ## 事前準備
 以下為節點配置：
 
-| IP Address  |   HostName   | 
+| IP Address  |   HostName   |
 |-------------|--------------|
 |192.168.1.10 | mesos-master |
 |192.168.1.11 | mesos-slave-1|
@@ -43,6 +43,7 @@ $ ssh-copy-id localhost
 ```sh
 $ sudo apt-get purge openjdk*
 $ sudo apt-get -y autoremove
+$ sudo apt-get install -y software-properties-common
 $ sudo add-apt-repository -y ppa:webupd8team/java
 $ sudo apt-get update
 $ echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
@@ -76,7 +77,7 @@ $ echo "deb http://repos.mesosphere.com/${DISTRO} ${CODENAME} main" | sudo tee /
 加入 key 與 repository 後，即可透過```apt-get```安裝：
 ```sh
 $ sudo apt-get update
-$ sudo apt-get -y install mesos 
+$ sudo apt-get -y install mesos
 ```
 > ```P.S```： Master 需要再安裝 marathon
 
@@ -191,7 +192,7 @@ sudo service mesos-slave restart
 MASTER=$(mesos-resolve `cat /etc/mesos/zk`)
 mesos-execute --master=$MASTER --name="cluster-test" --command="sleep 5"
 ```
-> 若要查看細節資訊，可以用瀏覽器開啟 [Mesos Console](http://<master-ip>:5050)、[Marathon console](http://<master-ip>:8080) 
+> 若要查看細節資訊，可以用瀏覽器開啟 [Mesos Console](http://<master-ip>:5050)、[Marathon console](http://<master-ip>:8080)
 
 ## 安裝 Spark Driver
 首先下載 Spark，並修改權限：
@@ -214,8 +215,8 @@ export SPARK_EXECUTOR_URI="/opt/spark-1.5.2.tgz"
 
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")
 
-export SPARK_LOCAL_IP=$(ifconfig eth0 | awk '/inet addr/{print substr($2,6)}') 
-export SPARK_LOCAL_HOSTNAME=$(ifconfig eth0 | awk '/inet addr/{print substr($2,6)}') 
+export SPARK_LOCAL_IP=$(ifconfig eth0 | awk '/inet addr/{print substr($2,6)}')
+export SPARK_LOCAL_HOSTNAME=$(ifconfig eth0 | awk '/inet addr/{print substr($2,6)}')
 ```
 > 若是多個 Master 採用以下方式```mesos://zk://192.168.100.7:2181,192.168.100.8:2181,192.168.100.9:2181/mesos```。
 
