@@ -124,7 +124,7 @@ $ ssh-keygen -t rsa
 $ cat .ssh/id_rsa
 ```
 
-並建立一個腳本檔案```ip-dectect```，並加入以下內容：
+並建立一個腳本檔案```ip-detect```，並加入以下內容：
 ```sh
 #!/bin/bash
 set -o nounset -o errexit
@@ -139,11 +139,18 @@ echo $(ip route get ${IP} | awk '{print $NF; exit}')
 ### CLI 安裝
 DC/OS 除了可以透過 GUI 進行安裝，也可以透過 CLI 的方式來佈署，首先建立目錄```genconf```：
 ```sh
+$ mkdir -p dcos_cluster
+$ cd dcos_cluster
 $ mkdir -p genconf
-$ cd genconf
 ```
 
-然後建立一個腳本檔案```ip-dectect```，並加入以下內容：
+然後下載 DC/OS installer 來進行安裝，並且查看所有指令：
+```sh
+$ wget https://downloads.dcos.io/dcos/EarlyAccess/dcos_generate_config.sh
+$ sudo bash dcos_generate_config.sh --help
+```
+
+建立一個腳本檔案```genconf/ip-detect```，並加入以下內容：
 ```sh
 #!/bin/bash
 set -o nounset -o errexit
@@ -155,7 +162,7 @@ echo $(ip route get ${IP} | awk '{print $NF; exit}')
 > ```MASTER_IP```為修改成主節點 IP。
 
 
-接著建立設定檔```config.yaml```，並加入以下內容：
+接著建立設定檔```genconf/config.yaml```，並加入以下內容：
 ```sh
 ---
 agent_list:
@@ -185,13 +192,7 @@ ssh_user: <username>
 $ cp <path-to-key> genconf/ssh_key && chmod 0600 genconf/ssh_key
 ```
 
-然後下載 DC/OS installer 來進行安裝，並且查看所有指令：
-```sh
-$ wget https://downloads.dcos.io/dcos/EarlyAccess/dcos_generate_config.sh
-$ sudo bash dcos_generate_config.sh --help
-```
-
-透過 DC/OS installer 產生設定檔：
+透過 DC/OS installer 產生設定資訊：
 ```sh
 $ sudo bash dcos_generate_config.sh --genconf
 Extracting image from this script and loading into docker daemon, this step can take a few minutes
@@ -203,15 +204,27 @@ Running mesosphere/dcos-genconf docker with BUILD_DIR set to /home/centos/gencon
 
 成功的話目錄結構會類似以下：
 ```
-├── dcos-genconf.<HASH>.tar
+├── dcos-genconf.14509fe1e7899f4395-3a2b7e03c45cd615da.tar
 ├── dcos_generate_config.sh
-├── genconf
-│   ├── config.yaml
-│   ├── ip-detect
-│   ├── cluster_packages.json
-│   ├── serve
-│   ├── ssh_key
-│   ├── state
+└── genconf
+    ├── cluster_packages.json
+    ├── config.yaml
+    ├── ip-detect
+    ├── serve
+    │   ├── bootstrap
+    │   │   ├── 3a2b7e03c45cd615da8dfb1b103943894652cd71.active.json
+    │   │   └── 3a2b7e03c45cd615da8dfb1b103943894652cd71.bootstrap.tar.xz
+    │   ├── bootstrap.latest
+    │   ├── cluster-package-info.json
+    │   ├── dcos_install.sh
+    │   ├── fetch_packages.sh
+    │   └── packages
+    │       ├── dcos-config
+    │       │   └── dcos-config--setup_6dac2d99011d6219b32d9f66cafa9845b7cf6d74.tar.xz
+    │       └── dcos-metadata
+    │           └── dcos-metadata--setup_6dac2d99011d6219b32d9f66cafa9845b7cf6d74.tar.xz
+    ├── ssh_key
+    └── state
 ```
 
 若沒問題就可以 prerequisites 佈署階段：
