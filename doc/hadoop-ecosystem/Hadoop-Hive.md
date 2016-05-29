@@ -17,6 +17,31 @@ Hive會將使用者輸入的Hive QL指令編譯成Java程式，再來存取HDFS�
 
 ![](images/hive flow.png)
 
+### 安裝步驟
+
+首先利用 ```curl``` 下載，並解壓縮到 ```/opt/``` 下
+
+```sh
+$ sudo curl -s http://archive.apache.org/dist/hive/hive-1.0.1/apache-hive-1.0.1-bin.tar.gz | sudo tar -xz -C /opt/
+$ sudo mv /opt/apache-hive-1.2.1-bin/ /opt/hive
+```
+
+然後設定環境變數
+
+```sh
+$ export HIVE_HOME=/opt/hive
+$ export PATH=$PATH:$HIVE_HOME/bin
+```
+
+最後可用這行指令檢查是否有安裝成功
+
+```sh
+$ hive --version
+```
+
+成功後會出現以下輸出:
+(待補充)
+
 ### Hive Shell
 
 *  建立一個名為 KeyValue 的 table，兩個欄位: key (型態 int) 與 value (型態 string)
