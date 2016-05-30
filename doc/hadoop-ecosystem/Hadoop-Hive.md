@@ -40,7 +40,8 @@ $ hive --version
 ```
 
 成功後會出現以下輸出:
-(待補充)
+
+![](images/hive_version_output.png)
 
 ### Hive Shell
 
