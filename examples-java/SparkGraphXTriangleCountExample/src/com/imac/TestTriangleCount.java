@@ -10,13 +10,15 @@ import org.apache.spark.graphx.Edge;
 import org.apache.spark.graphx.EdgeRDD;
 import org.apache.spark.graphx.Graph;
 import org.apache.spark.graphx.GraphLoader;
+import org.apache.spark.graphx.PartitionStrategy;
 import org.apache.spark.graphx.VertexRDD;
 import org.apache.spark.graphx.lib.PageRank;
+import org.apache.spark.graphx.lib.TriangleCount;
 import org.apache.spark.storage.StorageLevel;
 
 import scala.Tuple2;
 
-public class TestPageRank {
+public class TestTriangleCount {
 
 	public static void main(String[] args) {
 
@@ -36,7 +38,8 @@ public class TestPageRank {
 			6 7
 			3 7
 		 */
-		Graph<Object, Object> graph = GraphLoader.edgeListFile(sc.sc(), args[0], true, 1, StorageLevel.MEMORY_AND_DISK_SER(), StorageLevel.MEMORY_AND_DISK_SER());
+		Graph<Object, Object> graph = GraphLoader.edgeListFile(sc.sc(), args[0], true, 1, StorageLevel.MEMORY_AND_DISK_SER(), StorageLevel.MEMORY_AND_DISK_SER())
+					.partitionBy(PartitionStrategy.RandomVertexCut$.MODULE$);
 
 		//邊
 		EdgeRDD<Object> edge = graph.edges();
@@ -58,13 +61,14 @@ public class TestPageRank {
 			}
 		});
 
-		// 執行 PageRank 演算法
-		Graph<Object, Object> pageRank = PageRank.run(graph, 10, 0.0001, graph.vertices().vdTag(), graph.vertices().vdTag());
+		// 執行 TriangleCount 演算法
+		Graph<Object, Object> triCounts = TriangleCount.run(graph, graph.vertices().vdTag(), graph.vertices().vdTag());
+
 
 		//邊
-		EdgeRDD<Object> edgeRDD = pageRank.edges();
+		EdgeRDD<Object> edgeRDD = triCounts.edges();
 		//點
-		VertexRDD<Object> vertexRDD = pageRank.vertices();
+		VertexRDD<Object> vertexRDD = triCounts.vertices();
 
 		//查看執行完演算法的邊
 		edgeRDD.toJavaRDD().foreach(new VoidFunction<Edge<Object>>() {
@@ -117,7 +121,7 @@ public class TestPageRank {
 			}
 		});
 
-		ranksByUsername.foreach(new VoidFunction<Tuple2<String,String>>() {
+		ranksByUsername.sortByKey(false).foreach(new VoidFunction<Tuple2<String,String>>() {
 			public void call(Tuple2<String, String> arg0) throws Exception {
 				System.out.println(arg0);
 			}
