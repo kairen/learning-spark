@@ -32,6 +32,9 @@
 8,anonsys
 ```
 
+### followers示意圖
+![followers示意圖](image/graphx.jpg)
+
 ### 輸入資料-Edge
 ```txt
 Edge(1,2,1)
