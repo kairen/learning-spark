@@ -107,9 +107,9 @@ echo zk://$HOST_IP:2181/mesos | sudo tee /etc/mesos/zk
 ```sh
 echo 1 | sudo tee /etc/mesos-master/quorum
 ```
-> 若是 OpenStack VM 需要再設定 Host IP 為 Float IP：（Optional）
+> 若是 OpenStack VM 需要設定 Host IP 和 EXENTAL_IP 為 區網 IP 而非 Flaot IP：（Optional）
 ```sh
-EXENTAL_IP='10.26.1.69'
+EXENTAL_IP='192.168.1.10'
 echo $EXENTAL_IP | sudo tee /etc/mesos-master/hostname
 echo $HOST_IP | sudo tee /etc/mesos-master/ip
 echo 'mesos-cluster' | sudo tee /etc/mesos-master/cluster
@@ -160,9 +160,11 @@ sudo service zookeeper stop
 sudo sh -c "echo manual > /etc/init/zookeeper.override"
 ```
 設定 Mesos 與 Marathon：
+
+> ```P.S```： 若使用 OpenStack VM，需要將 MASTER_IP 和 PUBlIC_IP 設定為區網 IP
 ```sh
-MASTER_IP="10.26.1.69"
-PUBlIC_IP="10.26.1.80"
+MASTER_IP="192.168.1.10"
+PUBlIC_IP="192.168.1.11"
 HOST_IP=$(ip route get 8.8.8.8 | awk '{print $NF; exit}')
 echo zk://$MASTER_IP:2181/mesos | sudo tee /etc/mesos/zk
 ```
@@ -237,11 +239,11 @@ export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:jre/bin/java::")
 $ sudo tar -czvf spark-1.5.2.tgz spark-1.5.2/
 
 ```
-並在```Master```節點複製到所有```Slave```：
+並在```Master```節點複製到所有```Slave```並解壓縮：
 ```sh
 $ scp spark-1.5.2.tgz mesos-slave-1:~/ && ssh mesos-slave-1 sudo mv ~/spark-1.5.2.tgz /opt
 $ scp spark-1.5.2.tgz mesos-slave-2:~/ && ssh mesos-slave-2 sudo mv ~/spark-1.5.2.tgz /opt
-$
+$ sudo tar -xvf /opt/spark-1.5.2.tgz
 ```
 
 設定使用者環境參數：
