@@ -1,4 +1,4 @@
-# JavaFlumeEventWord
+# Java Flume Event Word
 
  Flume 監控某個本地端檔案變化，當新增內容到檔案內，SparkStreaming 會接收並顯示新增訊息
 
@@ -10,12 +10,12 @@
 			System.err.println("Usage: FlumeTest <host> <port>");
 			System.exit(1);
 		}
-		
+
 		StreamingExamples.setStreamingLogLevels();
-		
+
 		String host = args[0];
 		int port = Integer.parseInt(args[1]);
-		
+
 		//設定上下文且設定每秒接收訊息
 		Duration batchInterval = new Duration(1000);
 		SparkConf conf = new SparkConf().setAppName("JavaFlumeStreaming");
@@ -34,7 +34,7 @@
 				return arg0.event().getBody().array().toString();
 			}
 		}).print();
-		
+
 		//開啟 Stream 運算
 		sc.start();
 		sc.awaitTermination();
@@ -47,21 +47,21 @@
 	a1.sources = r1
 	a1.sinks = k1
 	a1.channels = c1
-	 
+
 	# Describe/configure the source
 	a1.sources.r1.type = exec
 	a1.sources.r1.command=tail -F /var/flume/access.log
-	 
+
 	# Describe the sink
 	a1.sinks.k1.type = avro
 	a1.sinks.k1.hostname = localhost
 	a1.sinks.k1.port = 33333
-	 
+
 	# Use a channel which buffers events in memory
 	a1.channels.c1.type = memory
 	a1.channels.c1.capacity = 1000
 	a1.channels.c1.transactionCapacity = 100
-	 
+
 	# Bind the source and sink to the channel
 	a1.sources.r1.channels = c1
 	a1.sinks.k1.channel = c1
@@ -98,12 +98,6 @@ $ sudo vim /var/flume/access.log
 	-------------------------------------------
 	Time: 1407741020000 ms
 	-------------------------------------------
-    
+
 	{"headers": {}, "body": {"bytes": "HI"}}
 ```
-
-
-
-
-
-

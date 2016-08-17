@@ -1,15 +1,14 @@
-#Databricks spark-perf Benchmark
+# Databricks spark-perf Benchmark
 
 本範例為利用 [spark-perf](https://github.com/databricks/spark-perf) 針對SparkStreaming進行效能測試
 
-
 ###系統需求
 > Ubuntu 14.04
-> 
+>
 > Hadoop2.6.0
-> 
+>
 > Spark1.5.2
-> 
+>
 > Mesos安裝
 
 
@@ -97,7 +96,7 @@ cd spark-perf/bin
 
 評估結果```state-by-key```，如下
 ```
-Result: count: 30, avg: 0.846 s, stdev: 0.244 s, min: 0.630 s, 
+Result: count: 30, avg: 0.846 s, stdev: 0.244 s, min: 0.630 s,
 25%: 0.707 s, 50%: 0.738 s, 75%: 0.824 s, max: 1.394 s
 ```
 
