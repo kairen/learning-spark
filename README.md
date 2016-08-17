@@ -1,18 +1,10 @@
-# Spark tutorial for imac
-本項目將儲存所有於分享會以及課程上，所接觸的系統建置、Spark API撰寫、HDFS 操作...等教學與整理，主要授課人員為 NUTC imac 內部團隊自我訓練。
+# Spark training for imac
+本項目將儲存所有於分享會以及課程上，所接觸的系統建置、Spark API 撰寫、HDFS 操作...等教學與整理，主要授課人員為 NUTC imac 內部團隊自我訓練。
 
 ### 主要包含項目
-1. Spark 概念整理
-2. Spark 環境部署模式
-3. Spark API 簡單操作
-4. Spark SQL API(Hive on Spark)
-5. Spark Streaming API(DStream)
-6. Message Queue Broker(such as MQTT, Kafka...etc)
-7. Spark MLlib
-8. ELK logs 分析
-9. Spark 串接 s3 與 swift
-10. Spark NoSQL 串接
-11. Spark Dataframe
+1. Spark 概念、部署與基本範例
+2. Hadoop 概念、部署與基本範例
+3. Spark 與 Hadoop 相關系統建置整理
 
 > 以上內容我們會逐一整理，並寫成文件來分享給大家。
 
